@@ -1,0 +1,7 @@
+.git
+.gitignore
+.assetsignore
+wrangler.json
+worker.js
+*.md
+deploy.ps1
