@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVHLSP | Specialized Medical Spanish Interpreting</title>
+    <meta name="description" content="Dedicated clinical dashboard for healthcare providers. Instant on-demand Medical Spanish human interpretation (OPI & VRI). Dedicated switchboard for hospitals, clinics, and triage desks.">
+    <link rel="icon" href="logo.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #0F172A;
+            background-color: #F8FAFC;
+        }
+        @media print {
+            body { background: white !important; }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+        }
+        .print-only { display: none; }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.02); }
+        }
+        .animate-live {
+            animation: pulse-subtle 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+
+    <!-- Top Institutional Banner & Clinical Navigation -->
+    <header class="bg-white border-b-2 border-[#105C7C] sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="/" class="group flex items-center gap-2.5 shrink-0">
+                    <img src="logo.jpg" alt="MVHLSP" class="h-7 sm:h-[30px] w-auto rounded shadow-2xs object-contain shrink-0">
+                    <div class="flex flex-col justify-between text-[8px] sm:text-[8.5px] font-bold text-slate-500 group-hover:text-[#105C7C] tracking-wider uppercase leading-[1.1] transition-colors whitespace-nowrap shrink-0">
+                        <span>Specialized</span>
+                        <span>Medical</span>
+                        <span>Spanish</span>
+                        <span>Interpreting</span>
+                    </div>
+                </a>
+                <span class="hidden md:inline-block h-6 w-px bg-slate-300 mx-2"></span>
+                <span class="hidden md:inline-block text-xs font-bold text-slate-600">
+                    Mountain Valley Healthcare Language Service Provider
+                </span>
+            </div>
+
+            <!-- Header Controls: Hotline, Live Roster Indicator & Agency Link -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <!-- Live Availability Badge -->
+                <div id="header-status-badge" class="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-300 rounded-lg text-emerald-800 shrink-0">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600"></span>
+                    </span>
+                    <span id="header-status-text" class="text-[11px] font-extrabold uppercase tracking-wide">
+                        1,000+ Interpreters Ready
+                    </span>
+                </div>
+
+                <!-- Clinical Desk Inquiries -->
+                <a href="mailto:info@mvhlsp.site" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-[#EEF6F9] hover:bg-[#C4DEE9]/50 border border-[#105C7C]/30 text-[#105C7C] rounded-lg text-xs font-black transition" title="Clinical Dispatch Desk Email">
+                    <svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span>info@mvhlsp.site</span>
+                </a>
+
+                <a href="/" class="text-xs font-bold text-slate-600 hover:text-[#105C7C] transition px-2 py-1">
+                    Agency Portal &rarr;
+                </a>
+
+                <!-- Special Executive Admin Button (Upper Right Side) -->
+                <button type="button" id="admin-header-btn" onclick="handleAdminHeaderClick()" class="px-3 py-1.5 bg-slate-900 hover:bg-[#105C7C] text-white border border-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs" title="Executive Admin Console">
+                    <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    <span id="admin-header-label">Admin</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Clinical Dashboard Body -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+        <!-- EXECUTIVE ADMIN ACTIVE BANNER -->
+        <div id="admin-active-banner" class="hidden p-4 bg-slate-900 border-2 border-emerald-500 rounded-2xl text-white shadow-xl">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                    <div>
+                        <div class="text-xs sm:text-sm font-bold flex items-center gap-2">
+                            <span>Executive Admin Mode Active</span>
+                            <span class="text-[10px] px-2 py-0.5 bg-emerald-950 text-emerald-300 border border-emerald-500/50 rounded font-bold uppercase">Free Minutes Unlocked</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 mt-0.5">Captain Alex: Dispatches consume Remoto free test allowance without checking or charging a card.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="openAdminConsoleModal()" class="px-3 py-1.5 bg-[#105C7C] hover:bg-[#156D93] text-white rounded-lg text-xs font-bold transition cursor-pointer">
+                        Admin Switchboard &rarr;
+                    </button>
+                    <button type="button" onclick="adminLogout()" class="px-3 py-1.5 bg-slate-800 hover:bg-rose-900/60 text-slate-300 hover:text-rose-200 border border-slate-700 rounded-lg text-xs font-bold transition cursor-pointer">
+                        Lock / Log Out
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- ACTIVE ENCOUNTER SCREEN (IN-PAGE EMBEDDED STAGE - ACTIVATES ON DISPATCH) -->
+        <!-- ================================================================= -->
+        <section id="encounter-active-screen" class="hidden bg-slate-900 border-2 border-cyan-500 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300">
+            <!-- Active Encounter Clinical Header -->
+            <div class="bg-slate-950 px-4 sm:px-6 py-3.5 border-b border-cyan-500/40 flex flex-wrap items-center justify-between gap-3 text-white">
+                <div class="flex items-center gap-3">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-80"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+                    </span>
+                    <div>
+                        <h2 class="text-sm sm:text-base font-black tracking-tight text-white flex items-center gap-2">
+                            <span>MVHLSP Secure Encounter Room</span>
+                            <span id="active-modality-badge" class="text-[10px] uppercase font-black px-2 py-0.5 rounded bg-cyan-900 text-cyan-200 border border-cyan-500/50">
+                                Video VRI
+                            </span>
+                        </h2>
+                        <p class="text-[11px] text-slate-400 font-semibold">
+                            Reference: <span id="active-ref-text" class="text-slate-200 font-bold">Exam Room 1</span> • 
+                            Session ID: <span id="active-session-id" class="text-cyan-300 font-mono">Connecting...</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Call Timer & Controls -->
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-xl text-center">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase block leading-none">Elapsed Time</span>
+                        <span id="active-timer-display" class="text-base sm:text-lg font-mono font-black text-emerald-400 leading-tight">
+                            00:00:00
+                        </span>
+                    </div>
+
+                    <!-- Clinical Support Desk -->
+                    <a href="mailto:info@mvhlsp.site" class="hidden md:inline-flex items-center gap-1.5 px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-slate-200 rounded-xl transition" title="Clinical Support Desk">
+                        <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>Support: info@mvhlsp.site</span>
+                    </a>
+
+                    <!-- End Call Button -->
+                    <button type="button" id="end-encounter-btn" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white text-xs sm:text-sm font-black uppercase tracking-wider rounded-xl shadow-lg transition flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-rose-300 shrink-0 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg> <span>End Encounter</span>
+                    </button>
+
+                    <!-- Dedicated Close Window Button -->
+                    <button type="button" id="close-encounter-window-btn" onclick="forceCloseEncounterWindow()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 hover:text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl border border-slate-700 hover:border-slate-500 shadow transition flex items-center gap-1.5 cursor-pointer" title="Close Window & Return to Dashboard">
+                        <svg class="w-3.5 h-3.5 text-slate-400 shrink-0 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg> <span>Close Window</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Embedded Live Video/Audio Frame -->
+            <div class="relative w-full bg-black aspect-video sm:aspect-auto sm:h-[680px]">
+                <div id="iframe-loading-overlay" class="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center text-white z-10 transition-opacity">
+                    <div class="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                    <p class="text-sm font-bold text-cyan-200 tracking-wide uppercase">Establishing Encrypted HIPAA Relay...</p>
+                    <p class="text-xs text-slate-400 mt-1">Connecting to certified medical Spanish human interpreter</p>
+                </div>
+
+                <iframe 
+                    id="encounter-iframe" 
+                    src="about:blank" 
+                    title="MVHLSP Clinical Spanish Interpretation Encounter" 
+                    class="w-full h-full border-0"
+                    allow="camera; microphone; display-capture; autoplay; encrypted-media; fullscreen"
+                ></iframe>
+            </div>
+
+            <!-- Clinical Security & Regulatory Micro-Bar -->
+            <div class="bg-slate-950 px-4 py-2 border-t border-slate-800 text-[10px] text-slate-400 flex flex-wrap items-center justify-between gap-2 font-medium">
+                <div class="flex items-center gap-3">
+                    <span class="text-emerald-400 font-bold"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0 inline-block align-middle mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>HIPAA 45 CFR § 164.504(e) Conduit</span>
+                    <span><svg class="w-3.5 h-3.5 text-slate-500 shrink-0 inline-block align-middle mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Zero-Data-Trace (ZDT) Transient Audio/Video</span>
+                    <span><svg class="w-3.5 h-3.5 text-slate-500 shrink-0 inline-block align-middle mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>$1.48/min per-second exact billing</span>
+                </div>
+                <div>
+                    Hospital Support Desk: <a href="mailto:info@mvhlsp.site" class="text-cyan-400 underline font-bold">info@mvhlsp.site</a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================================================================= -->
+        <!-- DISPATCH CONSOLE (PRE-CALL DASHBOARD) -->
+        <!-- ================================================================= -->
+        <div id="dispatch-console-container" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- Left 7 Columns: Instant Dispatch Launcher -->
+            <div class="lg:col-span-7 space-y-6">
+                
+                <section class="bg-white border-2 border-[#105C7C] rounded-2xl p-6 sm:p-7 shadow-xl relative overflow-hidden" aria-label="Clinical Switchboard Launcher">
+                    <!-- Section Header -->
+                    <div class="flex items-start justify-between border-b border-slate-200 pb-4 mb-5 gap-3">
+                        <div>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-[#105C7C] bg-cyan-50 px-2.5 py-1 rounded border border-[#105C7C]/30 inline-block mb-1.5">
+                                Instant Patient Encounter
+                            </span>
+                            <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+                                Connect Medical Spanish Interpreter
+                            </h1>
+                            <p class="text-xs font-bold text-slate-600 mt-1">
+                                Certified human Spanish interpreters on demand. Zero downloads or app installation required.
+                            </p>
+                        </div>
+                        <div class="shrink-0 text-right">
+                            <span class="text-xs font-black text-slate-900 block">$1.48 / min</span>
+                            <span class="text-[10px] font-bold text-emerald-700 block">Exact-Second Billing</span>
+                        </div>
+                    </div>
+
+                    <!-- Dispatch Form -->
+                    <form id="dashboard-dispatch-form" class="space-y-5">
+                        
+                        <!-- Step 1: Modality Selection -->
+                        <div>
+                            <label class="block text-xs font-black uppercase tracking-wider text-slate-700 mb-2">
+                                1. Select Encounter Modality
+                            </label>
+                            <div class="grid grid-cols-2 gap-3" role="radiogroup" aria-label="Encounter Modality">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="call_type" value="audio" checked class="peer sr-only">
+                                    <div class="p-3.5 rounded-xl border-2 border-slate-200 bg-slate-50 peer-checked:border-[#105C7C] peer-checked:bg-[#EEF6F9] transition flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-lg bg-slate-100 border border-slate-300 flex items-center justify-center shrink-0 mb-1"><svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></div>
+                                        <div>
+                                            <p class="text-xs sm:text-sm font-black text-slate-900 leading-tight">Audio (OPI)</p>
+                                            <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Immediate Voice Relay</p>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="call_type" value="video" class="peer sr-only">
+                                    <div class="p-3.5 rounded-xl border-2 border-slate-200 bg-slate-50 peer-checked:border-[#105C7C] peer-checked:bg-[#EEF6F9] transition flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-lg bg-slate-100 border border-slate-300 flex items-center justify-center shrink-0 mb-1"><svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg></div>
+                                        <div>
+                                            <p class="text-xs sm:text-sm font-black text-slate-900 leading-tight">Video Remote (VRI)</p>
+                                            <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Two-Way Visual & Spanish</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Clinic Station / Patient Ref -->
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label for="dispatch-client-ref" class="block text-xs font-black uppercase tracking-wider text-slate-700">
+                                    2. Station Reference / Patient Chart ID
+                                </label>
+                                <span class="text-[11px] text-slate-500 font-semibold">(For clinical encounter log)</span>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="dispatch-client-ref" 
+                                name="client_ref" 
+                                placeholder="e.g., Triage Desk A, Exam Room 4, Dr. Morales" 
+                                class="w-full px-4 py-3 rounded-xl bg-slate-50 border-2 border-slate-200 text-slate-900 font-bold text-xs sm:text-sm placeholder-slate-400 focus:outline-none focus:border-[#105C7C] focus:bg-white transition"
+                                value="Clinic Exam Room 1"
+                            >
+                        </div>
+
+                        <!-- Step 3: Clinical Department / Specialty (Optional) -->
+                        <div>
+                            <label for="dispatch-department" class="block text-xs font-black uppercase tracking-wider text-slate-700 mb-1.5">
+                                3. Clinical Department / Context
+                            </label>
+                            <select 
+                                id="dispatch-department" 
+                                name="department" 
+                                class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border-2 border-slate-200 text-slate-900 font-bold text-xs sm:text-sm focus:outline-none focus:border-[#105C7C] transition"
+                            >
+                                <option value="General Clinical & Outpatient">General Clinical &amp; Outpatient Consult</option>
+                                <option value="Emergency & Trauma Triage">Emergency &amp; Trauma Triage</option>
+                                <option value="Pediatrics & Family Care">Pediatrics &amp; Family Care</option>
+                                <option value="OB/GYN & Labor & Delivery">OB/GYN &amp; Labor &amp; Delivery</option>
+                                <option value="Surgical Pre-Op & Post-Op">Surgical Pre-Op &amp; Post-Op Discharge</option>
+                                <option value="Behavioral Health & Counseling">Behavioral Health &amp; Psychiatric Intake</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                                                <!-- Standby Active & Billing Safeguard Reassurance Card -->
+                        <div class="p-4 bg-gradient-to-r from-slate-50 to-[#EEF6F9] border border-[#C4DEE9] rounded-xl space-y-2 text-xs">
+                            <div class="flex items-center justify-between text-[11px] font-bold">
+                                <span class="flex items-center gap-1.5 text-emerald-700">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <span>Switchboard Standby Active • Direct Dispatch</span>
+                                </span>
+                                <span class="text-slate-600 font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-slate-200">$1.48 / min exact</span>
+                            </div>
+                            <div class="text-slate-600 leading-relaxed text-[11px]">
+                                <strong>Zero Upfront Charges:</strong> Card authorization is $0.00. You are never billed until a certified medical Spanish interpreter accepts the call and live interpretation begins. Metered strictly by the second with zero retainers.
+                            </div>
+                        </div>
+
+                        <!-- Primary Connect Button -->
+                        <button 
+                            type="submit" 
+                            id="dashboard-submit-btn" 
+                            class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-[#105C7C] to-[#156D93] hover:from-[#0E4B65] hover:to-[#105C7C] active:scale-[0.99] text-white font-black text-sm sm:text-base uppercase tracking-wider shadow-xl shadow-[#105C7C]/20 flex items-center justify-center gap-2 cursor-pointer transition"
+                        >
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span>Connect Medical Spanish Interpreter Now</span>
+                            <span aria-hidden="true">&rarr;</span>
+                        </button>
+
+                        <!-- Live Status Banner & Feedback -->
+                        <div id="dashboard-dispatch-alert" class="hidden text-center text-xs font-bold py-2.5 px-4 rounded-xl" aria-live="polite"></div>
+
+                    </form>
+                </section>
+
+                
+
+            </div>
+
+            <!-- Right 5 Columns: Clinical Standards, Pricing & Institutional Compliance -->
+            <div class="lg:col-span-5 space-y-6">
+
+                
+
+                <!-- Clinical Infrastructure & Regulatory Specifications -->
+                <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3.5">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                        <span class="text-xs font-black uppercase tracking-wider text-slate-800">
+                            Clinical Infrastructure
+                        </span>
+                        <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200">
+                            WebRTC Enterprise
+                        </span>
+                    </div>
+
+                    <div class="space-y-2.5 text-xs text-slate-600">
+                        <div class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span><strong>Zero-Data-Trace (ZDT):</strong> Transient audio/video media streams. No patient PHI or audio recordings are retained on edge servers.</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span><strong>Universal Access:</strong> Operates seamlessly across hospital workstations, triage laptops, exam-room tablets, iPads, and smartphones with zero plugin installation.</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span><strong>Specialized Roster:</strong> On-demand routing into 1,000+ certified medical Spanish interpreters specialized in emergency, outpatient, and surgical encounters.</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Billing & Provider Transparency Card -->
+                <section class="bg-gradient-to-br from-[#EEF6F9] to-cyan-50 border border-[#C4DEE9] rounded-2xl p-5 shadow-sm text-slate-800 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-black uppercase tracking-wider bg-[#105C7C] text-white px-2 py-0.5 rounded">
+                            Provider Standard
+                        </span>
+                        <span class="text-xs font-black text-[#105C7C]">$1.48 / min</span>
+                    </div>
+
+                    <p class="text-xs font-medium text-slate-700 leading-relaxed">
+                        MVHLSP provides specialized medical Spanish interpretation on an on-demand, exact-second billing schedule ($0.0247/sec). Zero monthly retainers. Zero upfront minimum platform fees.
+                    </p>
+
+                    <div class="pt-2 border-t border-[#C4DEE9]/60 flex flex-wrap items-center justify-between text-[11px] font-bold text-slate-600 gap-2">
+                        <span><svg class="w-3.5 h-3.5 text-slate-500 shrink-0 inline-block align-middle mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>HIPAA 45 CFR § 164.504(e)</span>
+                        <span><svg class="w-3.5 h-3.5 text-slate-500 shrink-0 inline-block align-middle mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>CMS Fraud, Waste &amp; Abuse</span>
+                        <span><svg class="w-3.5 h-3.5 text-slate-500 shrink-0 inline-block align-middle mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>ACA Section 1557</span>
+                    </div>
+                </section>
+
+                
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ================================================================= -->
+    <!-- EXECUTIVE ADMIN MODAL (LOGIN & COMMAND SWITCHBOARD) -->
+    <!-- ================================================================= -->
+    <div id="admin-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="relative bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            
+            <!-- Modal Header -->
+            <div class="bg-slate-900 px-6 py-4 flex items-center justify-between text-white border-b border-slate-800">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                    <h3 class="text-sm sm:text-base font-extrabold tracking-tight">Executive Admin Switchboard</h3>
+                </div>
+                <button type="button" onclick="closeAdminModal()" class="text-slate-400 hover:text-white transition cursor-pointer p-1 rounded-lg hover:bg-slate-800" title="Close">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Modal Body: Unauthenticated Login Form -->
+            <div id="admin-login-view" class="p-6 space-y-4">
+                <div class="text-xs text-slate-600 leading-relaxed">
+                    Enter executive credentials to unlock <strong>admin-granted free minutes test routing</strong> and direct switchboard communications with interpreters and clients.
+                </div>
+
+                <form id="admin-login-form" onsubmit="handleAdminLogin(event)" class="space-y-3.5">
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Admin User ID</label>
+                        <input type="text" id="admin-user-id" value="alex@mvhlsp.site" readonly class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-700 cursor-not-allowed">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">Executive Access Key</label>
+                        <input type="password" id="admin-access-key" placeholder="Enter Access Key" required class="w-full px-3 py-2 bg-white border border-slate-300 focus:border-[#105C7C] focus:ring-2 focus:ring-[#105C7C]/20 rounded-xl text-xs font-semibold text-slate-900 outline-none transition">
+                    </div>
+                    
+                    <div id="admin-login-error" class="hidden p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium"></div>
+
+                    <div class="pt-2 flex items-center justify-end gap-2.5">
+                        <button type="button" onclick="closeAdminModal()" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition">
+                            Cancel
+                        </button>
+                        <button type="submit" id="admin-login-submit" class="px-5 py-2.5 bg-[#105C7C] hover:bg-[#156D93] active:scale-95 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-md shadow-[#105C7C]/20 cursor-pointer">
+                            Authenticate & Unlock
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Body: Authenticated Executive Console -->
+            <div id="admin-console-view" class="hidden p-6 space-y-5">
+                <div class="bg-emerald-50 border border-emerald-200 p-3.5 rounded-xl flex items-center justify-between">
+                    <div>
+                        <div class="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                            <span>Captain Alex (Managing Director)</span>
+                        </div>
+                        <div class="text-[11px] text-emerald-700 mt-0.5">Agency: <strong>mvhlsp</strong> • Remoto Carrier ID: <code class="font-mono text-[10px]">6aedbc5e989cef6a80b751ff</code></div>
+                    </div>
+                    <span class="text-[10px] uppercase font-black px-2 py-0.5 bg-emerald-200 text-emerald-800 rounded">Active</span>
+                </div>
+
+                <!-- Test Minutes Routing Option -->
+                <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div class="text-xs font-bold text-slate-800">Free Minutes Test Routing</div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="admin-test-mode-toggle" checked onchange="toggleAdminTestMode(this)" class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                        </label>
+                    </div>
+                    <p class="text-[11px] text-slate-500 leading-relaxed">
+                        When enabled, dispatches consume your admin-granted free test allowance without checking or charging a credit card.
+                    </p>
+                </div>
+
+                <!-- Direct Communications with Interpreters & Clients -->
+                <div class="space-y-2.5">
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Remoto Switchboard Communications</div>
+                    
+                    <a href="https://www.proz.com/remoto/user/dashboard/business/6aedbc5e989cef6a80b751ff/interpreters" target="_blank" class="block p-3 bg-white hover:bg-slate-50 border border-slate-200 hover:border-[#105C7C] rounded-xl transition group">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-[#105C7C]"></span>
+                                <span class="text-xs font-bold text-slate-900 group-hover:text-[#105C7C]">Communicate with Roster Interpreters &rarr;</span>
+                            </div>
+                            <span class="text-[10px] text-slate-400">Remoto Roster</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-1">Review active interpreters (Valentina, Pilar, Gonzalo, Teresa), check online status, and message linguists.</p>
+                    </a>
+
+                    <a href="https://www.proz.com/remoto/user/dashboard/business/6aedbc5e989cef6a80b751ff/calls" target="_blank" class="block p-3 bg-white hover:bg-slate-50 border border-slate-200 hover:border-[#105C7C] rounded-xl transition group">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-cyan-600"></span>
+                                <span class="text-xs font-bold text-slate-900 group-hover:text-[#105C7C]">Customer Encounters & Live Call Monitor &rarr;</span>
+                            </div>
+                            <span class="text-[10px] text-slate-400">Live Calls</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-1">Inspect ongoing patient calls, view call logs, caller references, and duration reports.</p>
+                    </a>
+
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <a href="https://www.proz.com/remoto/user/portal-settings" target="_blank" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-center text-xs font-bold text-slate-700 hover:text-slate-900 transition">
+                            Portal Settings &rarr;
+                        </a>
+                        <a href="https://www.proz.com/remoto/b/mvhlsp/connect" target="_blank" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-center text-xs font-bold text-slate-700 hover:text-slate-900 transition">
+                            Card & Billing &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="pt-2 border-t border-slate-200 flex items-center justify-between">
+                    <button type="button" onclick="adminLogout()" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition cursor-pointer">
+                        Lock / Log Out
+                    </button>
+                    <button type="button" onclick="closeAdminModal()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition cursor-pointer">
+                        Return to Dashboard
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 font-semibold no-print">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div>
+                &copy; 2026 Mountain Valley Healthcare Language Service Provider (MVHLSP). All rights reserved.
+            </div>
+            <div class="flex items-center gap-4 text-[11px]">
+                <a href="/terms" class="hover:underline">Terms of Service</a>
+                <span>•</span>
+                <a href="mailto:info@mvhlsp.site" class="hover:underline">Contact Executive Office: info@mvhlsp.site</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================================================================= -->
+    <!-- CLIENT JAVASCRIPT AUTOMATION ENGINE -->
+    <!-- ================================================================= -->
+    <script>
+        // State variables
+        let callStartTime = null;
+        let callTimerInterval = null;
+        let activeEncounterId = null;
+        let activeModality = 'audio';
+        let activeReference = '';
+
+        // Executive Admin State
+        const ADMIN_STORAGE_KEY = 'mvhlsp_admin_key';
+        let isAdminAuthenticated = false;
+        let adminTestModeEnabled = true;
+
+        function getStoredAdminKey() {
+            return localStorage.getItem(ADMIN_STORAGE_KEY) || sessionStorage.getItem(ADMIN_STORAGE_KEY) || '';
+        }
+
+        function checkAdminAuthOnLoad() {
+            const key = getStoredAdminKey();
+            if (key) {
+                isAdminAuthenticated = true;
+                updateAdminUIState(true);
+            } else {
+                isAdminAuthenticated = false;
+                updateAdminUIState(false);
+            }
+        }
+
+        function updateAdminUIState(isAuth) {
+            const btnLabel = document.getElementById('admin-header-label');
+            const headerBtn = document.getElementById('admin-header-btn');
+            const banner = document.getElementById('admin-active-banner');
+            const loginView = document.getElementById('admin-login-view');
+            const consoleView = document.getElementById('admin-console-view');
+
+            if (isAuth) {
+                if (btnLabel) btnLabel.textContent = 'Admin (Active)';
+                if (headerBtn) {
+                    headerBtn.className = 'px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white border border-emerald-500 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs';
+                }
+                if (banner) banner.classList.remove('hidden');
+                if (loginView) loginView.classList.add('hidden');
+                if (consoleView) consoleView.classList.remove('hidden');
+            } else {
+                if (btnLabel) btnLabel.textContent = 'Admin';
+                if (headerBtn) {
+                    headerBtn.className = 'px-3 py-1.5 bg-slate-900 hover:bg-[#105C7C] text-white border border-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs';
+                }
+                if (banner) banner.classList.add('hidden');
+                if (loginView) loginView.classList.remove('hidden');
+                if (consoleView) consoleView.classList.add('hidden');
+            }
+        }
+
+        function handleAdminHeaderClick() {
+            const modal = document.getElementById('admin-modal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function openAdminConsoleModal() {
+            const modal = document.getElementById('admin-modal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            const modal = document.getElementById('admin-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            const keyInput = document.getElementById('admin-access-key');
+            const errBox = document.getElementById('admin-login-error');
+            const submitBtn = document.getElementById('admin-login-submit');
+            const keyVal = keyInput.value.trim();
+
+            if (!keyVal) return;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Verifying...';
+            if (errBox) errBox.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/admin/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ admin_key: keyVal })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    localStorage.setItem(ADMIN_STORAGE_KEY, keyVal);
+                    isAdminAuthenticated = true;
+                    updateAdminUIState(true);
+                    keyInput.value = '';
+                } else {
+                    throw new Error(data.error || 'Invalid Admin Access Key');
+                }
+            } catch (err) {
+                if (errBox) {
+                    errBox.textContent = err.message || 'Authentication failed. Please verify executive access key.';
+                    errBox.classList.remove('hidden');
+                }
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Authenticate & Unlock';
+            }
+        }
+
+        function toggleAdminTestMode(chk) {
+            adminTestModeEnabled = chk.checked;
+        }
+
+        function adminLogout() {
+            localStorage.removeItem(ADMIN_STORAGE_KEY);
+            sessionStorage.removeItem(ADMIN_STORAGE_KEY);
+            isAdminAuthenticated = false;
+            updateAdminUIState(false);
+            closeAdminModal();
+        }
+
+        // Close encounter window immediately without browser prompt
+        function forceCloseEncounterWindow() {
+            if (callTimerInterval) {
+                clearInterval(callTimerInterval);
+                callTimerInterval = null;
+            }
+            const screen = document.getElementById('encounter-active-screen');
+            const iframe = document.getElementById('encounter-iframe');
+            if (iframe) iframe.src = 'about:blank';
+            if (screen) screen.classList.add('hidden');
+            
+            const timerDisplay = document.getElementById('active-timer-display');
+            if (timerDisplay) timerDisplay.textContent = '00:00:00';
+            
+            const submitBtn = document.getElementById('dashboard-submit-btn');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span> <span>Connect Medical Spanish Interpreter Now</span> <span aria-hidden="true">&rarr;</span>';
+            }
+            
+            const alertBox = document.getElementById('dashboard-dispatch-alert');
+            if (alertBox) alertBox.classList.add('hidden');
+
+            const form = document.getElementById('dashboard-dispatch-form');
+            if (form) form.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 1. Availability check on page mount
+        async function fetchLiveAvailability() {
+            try {
+                const res = await fetch('/api/availability');
+                if (res.ok) {
+                    const data = await res.json();
+                    const statusText = document.getElementById('header-status-text');
+                    let count = 1049;
+                    if (data && data.data && data.data[0] && data.data[0].interpreters_total) {
+                        count = data.data[0].interpreters_total;
+                    }
+                    if (statusText) {
+                        statusText.textContent = `${count} Interpreters Ready`;
+                    }
+                }
+            } catch (e) {
+                // Silently keep default high-availability badge
+            }
+        }
+        fetchLiveAvailability();
+        setInterval(fetchLiveAvailability, 30000);
+
+        // 2. URL Parameter pre-selection (e.g., /dashboard?type=video) & Admin auth check
+        window.addEventListener('DOMContentLoaded', () => {
+            checkAdminAuthOnLoad();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true' || window.location.hash === '#admin') {
+                handleAdminHeaderClick();
+            }
+
+            const typeParam = urlParams.get('type');
+            if (typeParam === 'video') {
+                const videoRadio = document.querySelector('input[name="call_type"][value="video"]');
+                if (videoRadio) videoRadio.checked = true;
+            } else if (typeParam === 'audio') {
+                const audioRadio = document.querySelector('input[name="call_type"][value="audio"]');
+                if (audioRadio) audioRadio.checked = true;
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAdminModal();
+            }
+        });
+
+        // 3. Form Dispatch Handler
+        document.getElementById('dashboard-dispatch-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('dashboard-submit-btn');
+            const alertBox = document.getElementById('dashboard-dispatch-alert');
+            const callType = document.querySelector('input[name="call_type"]:checked').value;
+            const refVal = document.getElementById('dispatch-client-ref').value.trim() || 'Clinic Station 1';
+            const department = document.getElementById('dispatch-department').value;
+
+            activeModality = callType;
+            activeReference = refVal;
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span> <span>Contacting Switchboard...</span>';
+            
+            alertBox.classList.remove('hidden', 'bg-rose-100', 'text-rose-800');
+            alertBox.classList.add('bg-cyan-50', 'text-cyan-800', 'border', 'border-cyan-200');
+            alertBox.textContent = 'Allocating encrypted channel to frontline Spanish medical interpreter...';
+
+            const adminKey = getStoredAdminKey();
+            const headers = { 'Content-Type': 'application/json' };
+            const useAdminTestMinutes = Boolean(isAdminAuthenticated && adminTestModeEnabled && adminKey);
+            if (useAdminTestMinutes) {
+                headers['x-admin-key'] = adminKey;
+            }
+
+            try {
+                const response = await fetch('/api/dispatch', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({
+                        call_type: callType,
+                        client_name: refVal,
+                        notes: `Department: ${department} • Dispatched from MVHLSP Clinical Dashboard`,
+                        external_reference: `MV-${Date.now()}`,
+                        test_call: useAdminTestMinutes
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.join_url) {
+                    throw new Error(data.error || 'Switchboard did not issue a secure encounter token.');
+                }
+
+                activeEncounterId = data.id || `ENC-${Date.now()}`;
+                
+                alertBox.classList.remove('bg-cyan-50', 'text-cyan-800', 'border-cyan-200');
+                alertBox.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
+                alertBox.textContent = 'Encounter allocated! Launching secure clinical room...';
+
+                // Transition UI to the Active Encounter Screen (In-Page)
+                launchActiveEncounter(data.join_url);
+
+            } catch (err) {
+                alertBox.classList.remove('bg-cyan-50', 'text-cyan-800', 'border-cyan-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200');
+                const errMsg = (err.message || '').toLowerCase();
+                const isPaymentNeeded = errMsg.includes('payment') || errMsg.includes('card') || errMsg.includes('balance') || errMsg.includes('credit') || errMsg.includes('invoice');
+
+                if (isPaymentNeeded) {
+                    // Trigger cordial Standby Active reassurance modal
+                    openStandbyActiveModal();
+                    alertBox.classList.add('bg-cyan-50', 'text-[#105C7C]', 'border', 'border-cyan-200');
+                    alertBox.innerHTML = `
+                        <div class="flex items-center justify-between text-left gap-2">
+                            <div>
+                                <span class="font-bold flex items-center gap-1.5 text-emerald-700">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <span>Standby Active:</span> Channel Ready.
+                                </span>
+                                <span class="text-[11px] text-slate-600 block mt-0.5">Please kindly add a payment method to connect with your interpreter. Zero upfront fee.</span>
+                            </div>
+                            <button type="button" onclick="openStandbyActiveModal()" class="shrink-0 px-3 py-1.5 rounded-lg bg-[#0F2942] hover:bg-[#105C7C] text-white text-[11px] font-bold cursor-pointer transition">
+                                Complete Setup &rarr;
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    alertBox.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
+                    alertBox.innerHTML = `<span>Notice: ${err.message}</span><br><span class="text-[11px] mt-1 inline-block text-slate-600">Clinical Support Desk: <a href="mailto:info@mvhlsp.site" class="underline font-bold text-[#105C7C]">info@mvhlsp.site</a></span>`;
+                }
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span> <span>Connect Medical Spanish Interpreter Now</span> <span aria-hidden="true">&rarr;</span>';
+            }
+        });
+
+        
+        function openStandbyActiveModal() {
+            const modal = document.getElementById('standby-active-modal');
+            if (modal) modal.classList.remove('hidden');
+        }
+        function closeStandbyActiveModal() {
+
+        function openSecurePaymentLayer() {
+            const w = 560;
+            const h = 760;
+            const left = Math.max(0, (window.screen.width - w) / 2);
+            const top = Math.max(0, (window.screen.height - h) / 2);
+            const win = window.open(
+                'https://www.proz.com/remoto/b/mvhlsp/connect',
+                'MVHLSPSecureStripeGateway',
+                `width=${w},height=${h},top=${top},left=${left},status=no,toolbar=no,menubar=no,location=yes,resizable=yes,scrollbars=yes`
+            );
+            if (win) {
+                win.focus();
+            }
+        }
+
+            const modal = document.getElementById('standby-active-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        // 4. In-Page Encounter Launcher
+        function launchActiveEncounter(joinUrl) {
+            const screen = document.getElementById('encounter-active-screen');
+            const iframe = document.getElementById('encounter-iframe');
+            const overlay = document.getElementById('iframe-loading-overlay');
+            const badge = document.getElementById('active-modality-badge');
+            const refText = document.getElementById('active-ref-text');
+            const sessId = document.getElementById('active-session-id');
+
+            badge.textContent = activeModality === 'video' ? 'Video (VRI)' : 'Audio (OPI)';
+            badge.className = activeModality === 'video' 
+                ? 'text-[10px] uppercase font-black px-2 py-0.5 rounded bg-cyan-900 text-cyan-200 border border-cyan-500/50' 
+                : 'text-[10px] uppercase font-black px-2 py-0.5 rounded bg-emerald-900 text-emerald-200 border border-emerald-500/50';
+            
+            refText.textContent = activeReference;
+            sessId.textContent = activeEncounterId;
+
+            // Show active encounter screen and smoothly scroll into view
+            screen.classList.remove('hidden');
+            overlay.classList.remove('hidden', 'opacity-0');
+            screen.scrollIntoView({ behavior: 'smooth' });
+
+            iframe.src = joinUrl;
+            iframe.onload = () => {
+                setTimeout(() => {
+                    overlay.classList.add('opacity-0');
+                    setTimeout(() => overlay.classList.add('hidden'), 300);
+                }, 1000);
+            };
+
+            // Start encounter timer
+            startTimer();
+        }
+
+        // 5. Timer Engine
+        function startTimer() {
+            callStartTime = Date.now();
+            const timerDisplay = document.getElementById('active-timer-display');
+            if (callTimerInterval) clearInterval(callTimerInterval);
+
+            callTimerInterval = setInterval(() => {
+                const elapsedSec = Math.floor((Date.now() - callStartTime) / 1000);
+                const hrs = String(Math.floor(elapsedSec / 3600)).padStart(2, '0');
+                const mins = String(Math.floor((elapsedSec % 3600) / 60)).padStart(2, '0');
+                const secs = String(elapsedSec % 60).padStart(2, '0');
+                timerDisplay.textContent = `${hrs}:${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (callTimerInterval) {
+                clearInterval(callTimerInterval);
+                callTimerInterval = null;
+            }
+            if (!callStartTime) return '00:00';
+            const totalSec = Math.floor((Date.now() - callStartTime) / 1000);
+            const mins = String(Math.floor(totalSec / 60)).padStart(2, '0');
+            const secs = String(totalSec % 60).padStart(2, '0');
+            return `${mins}:${secs}`;
+        }
+
+        // 6. End Encounter Action
+        document.getElementById('end-encounter-btn').addEventListener('click', () => {
+            if (confirm('Are you sure you want to conclude this clinical interpretation encounter?')) {
+                concludeEncounter();
+            }
+        });
+
+        function concludeEncounter() {
+            const finalDuration = stopTimer();
+
+            // Log encounter locally
+            addEncounterToLog({
+                id: activeEncounterId,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                ref: activeReference,
+                modality: activeModality.toUpperCase(),
+                duration: finalDuration
+            });
+
+            forceCloseEncounterWindow();
+            alert(`Clinical encounter concluded.\nTotal Duration: ${finalDuration}\nSession logged into Remoto carrier report.`);
+        }
+
+        </script>
+    <!-- Standby Active Cordial Modal -->
+    <div id="standby-active-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs transition-opacity duration-200">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative animate-in fade-in zoom-in-95 duration-200">
+            <!-- Close Button -->
+            <button type="button" onclick="closeStandbyActiveModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition cursor-pointer" aria-label="Close modal">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <!-- Status Indicator -->
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold mb-4">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                <span>Encounter Channel Initialized • Standby Active</span>
+            </div>
+
+            <h3 class="text-lg sm:text-xl font-black text-slate-900 mb-2">
+                Kindly Add a Payment Method to Connect
+            </h3>
+
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">
+                Our certified medical Spanish interpreters are standing by. To initiate live encrypted audio/video telemetry, please add your preferred payment method to your Remoto account.
+            </p>
+
+            <!-- Transparent Billing Reassurance Points -->
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5 mb-6 text-xs text-slate-700">
+                <div class="flex items-start gap-2">
+                    <span class="text-emerald-600 font-bold mt-0.5">&check;</span>
+                    <span><strong>$0 Upfront Authorization:</strong> Nothing is charged today. No subscription, retainer, or monthly fee.</span>
+                </div>
+                <div class="flex items-start gap-2">
+                    <span class="text-emerald-600 font-bold mt-0.5">&check;</span>
+                    <span><strong>Strict Per-Second Metering:</strong> Billing only starts when a human interpreter accepts and speaks ($1.48/min).</span>
+                </div>
+                <div class="flex items-start gap-2">
+                    <span class="text-emerald-600 font-bold mt-0.5">&check;</span>
+                    <span><strong>100% HIPAA Compliant:</strong> Zero-Data-Trace audio/video streams with enterprise-grade security.</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center gap-3">
+                <button type="button" onclick="openSecurePaymentLayer()" class="w-full sm:flex-1 py-3.5 px-5 rounded-xl bg-[#0F2942] hover:bg-[#105C7C] text-white font-bold text-xs uppercase tracking-wider text-center shadow-md shadow-[#0F2942]/20 transition cursor-pointer flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    <span>Add Payment Method (Secure Stripe Gateway)</span>
+                    <span>&rarr;</span>
+                </button>
+                <button type="button" onclick="closeStandbyActiveModal()" class="w-full sm:w-auto py-3.5 px-5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition cursor-pointer">
+                    Return to Dispatch
+                </button>
+            </div>
+
+            <div class="mt-4 text-center">
+                <span class="text-[11px] text-slate-400">Clinical Support Desk: <a href="mailto:info@mvhlsp.site" class="text-[#105C7C] font-semibold hover:underline">info@mvhlsp.site</a></span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

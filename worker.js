@@ -219,7 +219,7 @@ export default {
             headers: newHeaders
           });
           const assetRes = await env.ASSETS.fetch(assetReq);
-          if (assetRes.status !== 404) {
+          if (assetRes.status >= 200 && assetRes.status < 300) {
             return assetRes;
           }
         } catch (e) {
