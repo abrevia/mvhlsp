@@ -269,5 +269,39 @@ export default {
       status: 200,
       headers: { 'Content-Type': 'text/plain; charset=UTF-8' }
     });
+  },
+
+  // Cron trigger: nudge the GitHub Actions "MVHLSP automations" workflow via
+  // workflow_dispatch, so the 30-min applicant intake + morning-inspiration
+  // engine keeps running even if GitHub's own schedule trigger stalls. The
+  // workflow's shared state/*.json dedup makes a duplicate call a safe no-op.
+  async scheduled(event, env, ctx) {
+    const pat = env.GH_PAT;
+    if (!pat) {
+      console.warn('MVHLSP cron: GH_PAT secret not set; skipping workflow_dispatch');
+      return;
+    }
+    try {
+      const resp = await fetch(
+        'https://api.github.com/repos/abrevia/mvhlsp-ops-backup/actions/workflows/mvhlsp-automations.yml/dispatches',
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + pat,
+            'Accept': 'application/vnd.github+json',
+            'User-Agent': 'mvhlsp-cron-worker',
+            'X-GitHub-Api-Version': '2022-11-28',
+          },
+          body: JSON.stringify({ ref: 'main' }),
+        }
+      );
+      if (resp.ok) {
+        console.log('MVHLSP cron: workflow_dispatch accepted');
+      } else {
+        console.warn('MVHLSP cron: workflow_dispatch failed ' + resp.status + ' ' + (await resp.text()));
+      }
+    } catch (e) {
+      console.warn('MVHLSP cron: error ' + (e && e.message ? e.message : String(e)));
+    }
   }
 };
