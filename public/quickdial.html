@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MVHLSP | Specialized Medical Spanish Interpreting</title>
+    <title>Specialized Medical Interpreting on Demand</title>
     <meta name="description" content="Dedicated clinical dashboard for healthcare providers. Instant on-demand Medical Spanish human interpretation (OPI & VRI). Dedicated switchboard for hospitals, clinics, and triage desks.">
     <link rel="icon" href="logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -37,13 +37,7 @@
             <div class="flex items-center gap-3">
                 <a href="/" class="group flex items-center gap-2.5 shrink-0">
                     <img src="logo.jpg" alt="MVHLSP" class="h-7 sm:h-[30px] w-auto rounded shadow-2xs object-contain shrink-0">
-                    <div class="flex flex-col justify-between text-[8px] sm:text-[8.5px] font-bold text-slate-500 group-hover:text-[#105C7C] tracking-wider uppercase leading-[1.1] transition-colors whitespace-nowrap shrink-0">
-                        <span>Specialized</span>
-                        <span>Medical</span>
-                        <span>Spanish</span>
-                        <span>Interpreting</span>
-                    </div>
-                </a>
+</a>
                 <span class="hidden md:inline-block h-6 w-px bg-slate-300 mx-2"></span>
                 <span class="hidden md:inline-block text-xs font-bold text-slate-600">
                     Mountain Valley Healthcare Language Service Provider
@@ -59,7 +53,7 @@
                         <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600"></span>
                     </span>
                     <span id="header-status-text" class="text-[11px] font-extrabold uppercase tracking-wide">
-                        1,000+ Interpreters Ready
+                        OPI &amp; VRI Standby
                     </span>
                 </div>
 
@@ -186,7 +180,7 @@
                 <div class="flex items-center gap-3">
                     <span class="text-emerald-400 font-bold"><svg class="w-3.5 h-3.5 text-slate-500 shrink-0 inline-block align-middle mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>HIPAA 45 CFR § 164.504(e) Conduit</span>
                     <span><svg class="w-3.5 h-3.5 text-slate-500 shrink-0 inline-block align-middle mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Zero-Data-Trace (ZDT) Transient Audio/Video</span>
-                    <span><svg class="w-3.5 h-3.5 text-slate-500 shrink-0 inline-block align-middle mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>$1.48/min per-second exact billing</span>
+                    <span><svg class="w-3.5 h-3.5 text-slate-500 shrink-0 inline-block align-middle mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>$1.65/min per-second exact billing</span>
                 </div>
                 <div>
                     Hospital Support Desk: <a href="mailto:info@mvhlsp.site" class="text-cyan-400 underline font-bold">info@mvhlsp.site</a>
@@ -218,7 +212,7 @@
                             </p>
                         </div>
                         <div class="shrink-0 text-right">
-                            <span class="text-xs font-black text-slate-900 block">$1.48 / min</span>
+                            <span class="text-xs font-black text-slate-900 block">$1.65 / min</span>
                             <span class="text-[10px] font-bold text-emerald-700 block">Exact-Second Billing</span>
                         </div>
                     </div>
@@ -300,7 +294,7 @@
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                                     <span>Switchboard Standby Active • Direct Dispatch</span>
                                 </span>
-                                <span class="text-slate-600 font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-slate-200">$1.48 / min exact</span>
+                                <span class="text-slate-600 font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-slate-200">$1.65 / min exact</span>
                             </div>
                             <div class="text-slate-600 leading-relaxed text-[11px]">
                                 <strong>Zero Upfront Charges:</strong> Card authorization is $0.00. You are never billed until a certified medical Spanish interpreter accepts the call and live interpretation begins. Metered strictly by the second with zero retainers.
@@ -366,11 +360,11 @@
                         <span class="text-[10px] font-black uppercase tracking-wider bg-[#105C7C] text-white px-2 py-0.5 rounded">
                             Provider Standard
                         </span>
-                        <span class="text-xs font-black text-[#105C7C]">$1.48 / min</span>
+                        <span class="text-xs font-black text-[#105C7C]">$1.65 / min</span>
                     </div>
 
                     <p class="text-xs font-medium text-slate-700 leading-relaxed">
-                        MVHLSP provides specialized medical Spanish interpretation on an on-demand, exact-second billing schedule ($0.0247/sec). Zero monthly retainers. Zero upfront minimum platform fees.
+                        MVHLSP provides specialized medical interpretation on an on-demand, exact-second billing schedule ($0.0275/sec). Zero monthly retainers. Zero upfront minimum platform fees.
                     </p>
 
                     <div class="pt-2 border-t border-[#C4DEE9]/60 flex flex-wrap items-center justify-between text-[11px] font-bold text-slate-600 gap-2">
@@ -542,7 +536,8 @@
         let adminTestModeEnabled = true;
 
         function getStoredAdminKey() {
-            return localStorage.getItem(ADMIN_STORAGE_KEY) || sessionStorage.getItem(ADMIN_STORAGE_KEY) || '';
+            try { localStorage.removeItem(ADMIN_STORAGE_KEY); } catch (e) {}
+        return sessionStorage.getItem(ADMIN_STORAGE_KEY) || '';
         }
 
         function checkAdminAuthOnLoad() {
@@ -619,7 +614,7 @@
 
                 const data = await res.json();
                 if (res.ok && data.success) {
-                    localStorage.setItem(ADMIN_STORAGE_KEY, keyVal);
+                    sessionStorage.setItem(ADMIN_STORAGE_KEY, keyVal);
                     isAdminAuthenticated = true;
                     updateAdminUIState(true);
                     keyInput.value = '';
@@ -688,7 +683,7 @@
                         count = data.data[0].interpreters_total;
                     }
                     if (statusText) {
-                        statusText.textContent = `${count} Interpreters Ready`;
+                        statusText.textContent = 'OPI & VRI Standby';
                     }
                 }
             } catch (e) {
@@ -950,7 +945,7 @@
                 </div>
                 <div class="flex items-start gap-2">
                     <span class="text-emerald-600 font-bold mt-0.5">&check;</span>
-                    <span><strong>Strict Per-Second Metering:</strong> Billing only starts when a human interpreter accepts and speaks ($1.48/min).</span>
+                    <span><strong>Strict Per-Second Metering:</strong> Billing only starts when a human interpreter accepts and speaks ($1.65/min).</span>
                 </div>
                 <div class="flex items-start gap-2">
                     <span class="text-emerald-600 font-bold mt-0.5">&check;</span>

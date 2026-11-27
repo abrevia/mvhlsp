@@ -1,7 +1,7 @@
 {
-  "name": "InterpretLive MVHLSP — Medical Interpreting",
+  "name": "Specialized Medical Interpreting on Demand",
   "short_name": "MVHLSP",
-  "description": "HIPAA-compliant OPI/VRI overflow interpretation for US clinics. No contracts, billed by the second.",
+  "description": "HIPAA-compliant OPI/VRI overflow interpretation. No contracts, billed by the second.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
