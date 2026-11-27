@@ -9,9 +9,7 @@
     <link rel="canonical" href="https://mvhlsp.site/terms">
     <link rel="icon" href="logo.jpg">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/fonts.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -33,6 +31,26 @@
     </script>
     <style>
         body { background: #FFFFFF; color: #2A2A26; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    
+        /* Gentle "clickable" cue: slow breathing ring (respects reduced motion) */
+        @keyframes aliveRing {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        .alive { position: relative; }
+        .alive::after {
+            content: "";
+            position: absolute;
+            inset: -3px;
+            border-radius: inherit;
+            border: 2px solid rgba(17, 92, 123, 0.20);
+            opacity: 0;
+            pointer-events: none;
+            animation: aliveRing 6s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .alive::after { animation: none !important; opacity: 0 !important; }
+        }
     </style>
 </head>
 

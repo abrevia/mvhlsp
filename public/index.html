@@ -20,9 +20,7 @@
     <link rel="icon" href="logo.jpg">
 
     <!-- Typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/fonts.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -64,6 +62,26 @@
                 transition-duration: .001ms !important;
             }
         }
+    
+        /* Gentle "clickable" cue: slow breathing ring (respects reduced motion) */
+        @keyframes aliveRing {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        .alive { position: relative; }
+        .alive::after {
+            content: "";
+            position: absolute;
+            inset: -3px;
+            border-radius: inherit;
+            border: 2px solid rgba(17, 92, 123, 0.20);
+            opacity: 0;
+            pointer-events: none;
+            animation: aliveRing 6s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .alive::after { animation: none !important; opacity: 0 !important; }
+        }
     </style>
 </head>
 
@@ -93,12 +111,12 @@
             <!-- Primary CTA -->
             <div class="flex items-center gap-2">
                 <button type="button" onclick="activateBackup(this)"
-                        class="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-xl bg-[#115C7B] px-3.5 py-2.5 text-[13px] font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 active:translate-y-0 sm:px-5 sm:text-sm">
+                        class="alive inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-xl bg-[#115C7B] px-3.5 py-2.5 text-[13px] font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 active:translate-y-0 sm:px-5 sm:text-sm">
                     Activate Backup
                 </button>
 
                 <button type="button" id="menu-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"
-                        class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 md:hidden">
+                        class="alive inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 md:hidden">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"/>
                     </svg>
@@ -132,11 +150,11 @@
 
                 <div class="mx-auto mt-8 flex w-full max-w-sm flex-col items-stretch justify-center gap-4 sm:mt-10 sm:max-w-none sm:flex-row sm:items-center">
                     <button type="button" onclick="activateBackup(this)"
-                            class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#115C7B] px-6 py-3.5 text-[15px] font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 active:translate-y-0 sm:w-auto">
+                            class="alive inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#115C7B] px-6 py-3.5 text-[15px] font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 active:translate-y-0 sm:w-auto">
                         Activate Backup
                     </button>
                     <a href="#pricing"
-                       class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-line bg-white px-6 py-3.5 text-[15px] font-semibold text-ink transition duration-150 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 active:translate-y-0 sm:w-auto">
+                       class="alive inline-flex w-full items-center justify-center gap-2 rounded-xl border border-line bg-white px-6 py-3.5 text-[15px] font-semibold text-ink transition duration-150 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 active:translate-y-0 sm:w-auto">
                         See Pricing
                     </a>
                 </div>
@@ -404,7 +422,7 @@
                         </ul>
 
                         <button type="button" onclick="activateBackup(this)"
-                                class="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#115C7B] px-6 py-3.5 text-[15px] font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 active:translate-y-0">
+                                class="alive mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#115C7B] px-6 py-3.5 text-[15px] font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 active:translate-y-0">
                             Activate Your Backup Link
                         </button>
 
@@ -435,9 +453,9 @@
                 <div class="md:justify-self-center">
                     <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300">Trust</h2>
                     <ul class="mt-4 space-y-2.5">
-                        <li><button type="button" onclick="openPrivacyModal()" class="text-sm text-slate-300 transition-colors hover:text-white">Privacy Policy</button></li>
+                        <li><button type="button" onclick="openPrivacyModal()" class="alive text-sm text-slate-300 transition-colors hover:text-white">Privacy Policy</button></li>
                         <li><a href="/terms" class="text-sm text-slate-300 transition-colors hover:text-white">Terms of Service</a></li>
-                        <li><button type="button" onclick="openBaaModal('Executed BAA Request')" class="text-sm text-slate-300 transition-colors hover:text-white">BAA Request</button></li>
+                        <li><button type="button" onclick="openBaaModal('Executed BAA Request')" class="alive text-sm text-slate-300 transition-colors hover:text-white">BAA Request</button></li>
                     </ul>
                 </div>
 
@@ -446,7 +464,7 @@
                     <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300">Contact</h2>
                     <p class="mt-4 flex items-center gap-2">
                         <a href="mailto:info@mvhlsp.site" class="text-sm font-medium text-slate-200 transition-colors hover:text-white">info@mvhlsp.site</a>
-                        <button type="button" onclick="openAdminSignIn()" aria-label="Executive admin access" title="Executive admin access" class="rounded text-slate-500 transition-colors hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
+                        <button type="button" onclick="openAdminSignIn()" aria-label="Executive admin access" title="Executive admin access" class="alive rounded text-slate-500 transition-colors hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75M6.75 21h10.5a2.25 2.25 0 002.25-2.25v-6a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 12.75v6A2.25 2.25 0 006.75 21z"/></svg>
                         </button>
                     </p>
@@ -459,6 +477,7 @@
                     By accessing or using this website you accept our
                     <a href="/terms" class="font-semibold text-slate-300 underline decoration-slate-600 underline-offset-2 hover:text-white">Terms of Service</a>
                     and <a href="/privacy" class="font-semibold text-slate-300 underline decoration-slate-600 underline-offset-2 hover:text-white">Privacy Policy</a>.
+                    We do not use advertising or tracking cookies.
                 </p>
             </div>
         </div>
@@ -474,7 +493,7 @@
                     <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
                 </span>
                 <h2 id="activate-title" class="text-sm font-bold text-ink">Activating your backup line</h2>
-                <button type="button" onclick="closeModal('activate-modal')" aria-label="Close" class="ml-auto -mr-1 rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
+                <button type="button" onclick="closeModal('activate-modal')" aria-label="Close" class="alive ml-auto -mr-1 rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
             </div>
 
             <div class="space-y-4 p-5 text-sm text-slate-600">
@@ -500,7 +519,7 @@
                     </p>
                     <p class="text-sm leading-relaxed text-slate-600">A secure session has been prepared for this encounter. Keep this window open until you are connected.</p>
                     <button type="button" onclick="proceedToSession()" data-autofocus
-                            class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#115C7B] px-6 py-3 text-sm font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
+                            class="alive inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#115C7B] px-6 py-3 text-sm font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
                         Enter Secure Session
                         <span aria-hidden="true">&rarr;</span>
                     </button>
@@ -637,7 +656,7 @@
                                class="min-w-0 flex-1 rounded-lg border border-line px-2 py-1.5 text-xs text-ink placeholder-slate-400 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600">
                     </div>
                     <button type="button" onclick="activateBackup(this)"
-                            class="inline-flex w-full items-center justify-center rounded-lg border border-line bg-[#F8FAFC] px-3 py-2 text-xs font-semibold text-ink transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">
+                            class="alive inline-flex w-full items-center justify-center rounded-lg border border-line bg-[#F8FAFC] px-3 py-2 text-xs font-semibold text-ink transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">
                         Start with these settings
                     </button>
                 </div>
@@ -660,7 +679,7 @@
             <div class="flex items-center gap-2.5 border-b border-line bg-[#F8FAFC] px-5 py-4">
                 <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75M6.75 21h10.5a2.25 2.25 0 002.25-2.25v-6a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 12.75v6A2.25 2.25 0 006.75 21z"/></svg>
                 <h2 id="admin-login-title" class="text-sm font-bold text-ink">Executive sign-in</h2>
-                <button type="button" onclick="closeModal('admin-login-modal')" aria-label="Close" class="ml-auto rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
+                <button type="button" onclick="closeModal('admin-login-modal')" aria-label="Close" class="alive ml-auto rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
             </div>
             <form onsubmit="handleAdminSignInSubmit(event)" class="space-y-4 p-5">
                 <div>
@@ -675,7 +694,7 @@
                 </div>
                 <p id="admin-signin-error" class="hidden rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-medium text-rose-700"></p>
                 <button type="submit" id="admin-signin-submit"
-                        class="inline-flex w-full items-center justify-center rounded-xl bg-[#115C7B] px-6 py-3 text-sm font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
+                        class="alive inline-flex w-full items-center justify-center rounded-xl bg-[#115C7B] px-6 py-3 text-sm font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
                     Sign in to console
                 </button>
             </form>
@@ -688,7 +707,7 @@
         <div class="relative flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-2xl">
             <div class="flex items-center justify-between gap-3 border-b border-line bg-[#F8FAFC] px-5 py-4">
                 <h2 id="privacy-modal-title" class="text-sm font-bold text-ink">Privacy Policy</h2>
-                <button type="button" onclick="closeModal('privacy-modal')" aria-label="Close" class="rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
+                <button type="button" onclick="closeModal('privacy-modal')" aria-label="Close" class="alive rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
             </div>
 
             <div class="max-h-[65vh] space-y-4 overflow-y-auto p-5 text-sm leading-relaxed text-slate-600">
@@ -725,7 +744,7 @@
 
             <div class="flex items-center justify-between border-t border-line bg-[#F8FAFC] px-5 py-3">
                 <span class="text-[11px] text-slate-500">MVHLSP Privacy &amp; HIPAA Governance</span>
-                <button type="button" onclick="closeModal('privacy-modal')" class="rounded-xl bg-ink px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">Close</button>
+                <button type="button" onclick="closeModal('privacy-modal')" class="alive rounded-xl bg-ink px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">Close</button>
             </div>
         </div>
     </div>
@@ -739,7 +758,7 @@
                     <h2 id="baa-modal-title" class="text-sm font-bold text-ink">Request BAA / Clinic Onboarding</h2>
                     <p class="mt-0.5 text-xs text-slate-500">HIPAA Business Associate Agreement &middot; clinic onboarding</p>
                 </div>
-                <button type="button" onclick="closeModal('baa-modal')" aria-label="Close" class="rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
+                <button type="button" onclick="closeModal('baa-modal')" aria-label="Close" class="alive rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
             </div>
 
             <!-- Form -->
@@ -893,7 +912,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#115C7B] px-6 py-3 text-sm font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
+                    <button type="submit" class="alive inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#115C7B] px-6 py-3 text-sm font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
                         Submit Request
                     </button>
                     <p class="text-center text-[11px] text-slate-500">We reply the same business day. No sales calls unless you ask.</p>
@@ -926,13 +945,13 @@
                 </div>
 
                 <div class="space-y-2">
-                    <button type="button" onclick="downloadBaaDocument()" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#115C7B] px-6 py-3 text-sm font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
+                    <button type="button" onclick="downloadBaaDocument()" class="alive inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#115C7B] px-6 py-3 text-sm font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#0C4659] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
                         Print Official BAA
                     </button>
-                    <a id="baa-mail-link" href="mailto:info@mvhlsp.site" class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-line bg-white px-6 py-3 text-sm font-semibold text-ink transition duration-150 hover:-translate-y-0.5 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
+                    <a id="baa-mail-link" href="mailto:info@mvhlsp.site" class="alive inline-flex w-full items-center justify-center gap-2 rounded-xl border border-line bg-white px-6 py-3 text-sm font-semibold text-ink transition duration-150 hover:-translate-y-0.5 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
                         Email This Request
                     </a>
-                    <button type="button" onclick="closeModal('baa-modal')" class="w-full rounded-xl px-6 py-2.5 text-sm font-semibold text-slate-500 transition hover:text-ink">Done</button>
+                    <button type="button" onclick="closeModal('baa-modal')" class="alive w-full rounded-xl px-6 py-2.5 text-sm font-semibold text-slate-500 transition hover:text-ink">Done</button>
                 </div>
             </div>
         </div>
@@ -944,7 +963,7 @@
         <div class="relative flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-2xl">
             <div class="flex items-center justify-between gap-3 border-b border-line bg-[#F8FAFC] px-5 py-4">
                 <h2 id="terms-modal-title" class="text-sm font-bold text-ink">Terms of Service &amp; Neutral Conduit Doctrine</h2>
-                <button type="button" onclick="closeModal('terms-modal')" aria-label="Close" class="rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
+                <button type="button" onclick="closeModal('terms-modal')" aria-label="Close" class="alive rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
             </div>
 
             <div class="max-h-[65vh] space-y-4 overflow-y-auto p-5 text-sm leading-relaxed text-slate-600">
@@ -968,7 +987,7 @@
 
             <div class="flex items-center justify-between border-t border-line bg-[#F8FAFC] px-5 py-3">
                 <span class="text-[11px] text-slate-500">MVHLSP Healthcare Governance</span>
-                <button type="button" onclick="closeModal('terms-modal')" class="rounded-xl bg-ink px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">Close</button>
+                <button type="button" onclick="closeModal('terms-modal')" class="alive rounded-xl bg-ink px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">Close</button>
             </div>
         </div>
     </div>
