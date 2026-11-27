@@ -87,6 +87,8 @@
         }
         .alive-a > div, .alive-b > div { animation: cardPrompt 2.8s ease-in-out infinite; }
         .alive-b > div { animation-delay: -1.4s; }
+
+        .alive-a > div, .alive-b > div { will-change: transform; }
         @keyframes hintBob {
             0%, 100% { transform: translateY(0); opacity: .55; }
             50% { transform: translateY(3px); opacity: 1; }
@@ -308,6 +310,7 @@
                                             <p class="text-xs sm:text-sm font-black text-slate-900 leading-tight">Audio (OPI)</p>
                                             <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Immediate Voice Relay</p>
                                         </div>
+                                        <span class="ml-auto shrink-0 inline-flex items-center gap-1 rounded-full border border-[#C4DEE9] bg-[#EEF6F9] px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-[#115C7B]">Select &rarr;</span>
                                     </div>
                                 </label>
                                 <label class="cursor-pointer alive alive-b">
@@ -318,6 +321,7 @@
                                             <p class="text-xs sm:text-sm font-black text-slate-900 leading-tight">Video Remote (VRI)</p>
                                             <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Two-Way Visual Interpreting</p>
                                         </div>
+                                        <span class="ml-auto shrink-0 inline-flex items-center gap-1 rounded-full border border-[#C4DEE9] bg-[#EEF6F9] px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-[#115C7B]">Select &rarr;</span>
                                     </div>
                                 </label>
                             </div>
@@ -917,6 +921,15 @@
             document.getElementById('baa-form-container').classList.add('hidden');
             document.getElementById('baa-success-container').classList.remove('hidden');
         }
+
+
+        // Resume the pulse if the browser froze animations while the tab was hidden
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) return;
+            document.querySelectorAll('.alive-a > div, .alive-b > div').forEach(function (el) {
+                el.getAnimations().forEach(function (a) { if (a.playState === 'paused') a.play(); });
+            });
+        });
 
         // 3. Language picker (opened by the Connect button)
         function openLanguagePicker() {
