@@ -249,6 +249,12 @@ export default {
       if (res) return res;
     }
 
+    // Clean routing for /privacy
+    if (path === '/privacy') {
+      const res = await resolveAsset('/privacy.html');
+      if (res) return res;
+    }
+
     // Root homepage
     if (path === '/' || path === '' || path === '/index.html') {
       const res = await resolveAsset('/index.html');

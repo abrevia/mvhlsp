@@ -1,11 +1,11 @@
 {
-  "name": "MVHLSP - Specialized Medical Spanish Interpreting",
+  "name": "InterpretLive MVHLSP — Medical Interpreting",
   "short_name": "MVHLSP",
-  "description": "On-demand clinical Spanish interpreting for healthcare systems. No contracts, per-second billing.",
+  "description": "HIPAA-compliant OPI/VRI overflow interpretation for US clinics. No contracts, billed by the second.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#1b5974",
+  "theme_color": "#2563EB",
   "icons": [
     {
       "src": "logo.jpg",
