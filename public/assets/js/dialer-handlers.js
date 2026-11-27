@@ -33,11 +33,18 @@
     h28: function (event) { closeStandbyActiveModal() },
     };
     var attrToEvent = { 'data-c': 'click', 'data-s': 'submit', 'data-ch': 'change', 'data-i': 'input', 'data-kd': 'keydown', 'data-ku': 'keyup', 'data-f': 'focus', 'data-b': 'blur', 'data-mo': 'mouseover', 'data-mu': 'mouseout', 'data-md': 'mousedown', 'data-ts': 'touchstart' };
-    Object.keys(attrToEvent).forEach(function (attr) {
-        var nodes = document.querySelectorAll('[' + attr + ']');
-        Array.prototype.forEach.call(nodes, function (el) {
-            var fn = handlers[el.getAttribute(attr)];
-            if (fn) el.addEventListener(attrToEvent[attr], fn);
+    function wireHandlers() {
+        Object.keys(attrToEvent).forEach(function (attr) {
+            var nodes = document.querySelectorAll('[' + attr + ']');
+            Array.prototype.forEach.call(nodes, function (el) {
+                var fn = handlers[el.getAttribute(attr)];
+                if (fn) el.addEventListener(attrToEvent[attr], fn);
+            });
         });
-    });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', wireHandlers);
+    } else {
+        wireHandlers();
+    }
 })();

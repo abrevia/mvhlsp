@@ -360,11 +360,15 @@
                                 </span>
                                 <span class="text-[11px] text-slate-600 block mt-0.5">Please kindly add a payment method to connect with your interpreter. Zero upfront fee.</span>
                             </div>
-                            <button type="button" onclick="openStandbyActiveModal()" class="alive shrink-0 px-3 py-1.5 rounded-lg bg-[#115C7B] hover:bg-[#0C4659] text-white text-[11px] font-bold cursor-pointer transition">
+                            <button type="button" data-standby-open class="alive shrink-0 px-3 py-1.5 rounded-lg bg-[#115C7B] hover:bg-[#0C4659] text-white text-[11px] font-bold cursor-pointer transition">
                                 Complete Setup
                             </button>
                         </div>
                     `;
+                    // Inline on* handlers are blocked by the site CSP: wire the
+                    // dynamically inserted button with addEventListener instead.
+                    const standbyOpenBtn = alertBox.querySelector('[data-standby-open]');
+                    if (standbyOpenBtn) standbyOpenBtn.addEventListener('click', openStandbyActiveModal);
                 } else {
                     alertBox.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
                     alertBox.innerHTML = `<span>Notice: ${err.message}</span><br><span class="text-[11px] mt-1 inline-block text-slate-600">Clinical Support Desk: <a href="mailto:info@mvhlsp.site" class="underline font-bold text-[#115C7B]">info@mvhlsp.site</a></span>`;
@@ -381,6 +385,9 @@
             if (modal) modal.classList.remove('hidden');
         }
         function closeStandbyActiveModal() {
+            const modal = document.getElementById('standby-active-modal');
+            if (modal) modal.classList.add('hidden');
+        }
 
         function openSecurePaymentLayer() {
             const w = 560;
@@ -395,10 +402,6 @@
             if (win) {
                 win.focus();
             }
-        }
-
-            const modal = document.getElementById('standby-active-modal');
-            if (modal) modal.classList.add('hidden');
         }
 
         // Printable BAA generator
