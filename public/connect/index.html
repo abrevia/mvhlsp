@@ -77,11 +77,6 @@
         /* Modality card motion is driven by anime.js (soft easing) */
 
         .alive-a > div, .alive-b > div { will-change: transform; }
-        @keyframes hintBob {
-            0%, 100% { transform: translateY(0); opacity: .55; }
-            50% { transform: translateY(3px); opacity: 1; }
-        }
-        .hint-arrow { display: inline-block; animation: hintBob 1.6s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce) {
             .alive-a > div, .alive-b > div, .hint-arrow { animation: none !important; }
         }
@@ -161,7 +156,7 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <button type="button" onclick="openAdminConsoleModal()" class="alive px-3 py-1.5 bg-[#115C7B] hover:bg-[#0C4659] text-white rounded-lg text-xs font-bold transition cursor-pointer">
-                        Admin Switchboard &rarr;
+                        Admin Switchboard
                     </button>
                     <button type="button" onclick="adminLogout()" class="alive px-3 py-1.5 bg-slate-800 hover:bg-rose-900/60 text-slate-300 hover:text-rose-200 border border-slate-700 rounded-lg text-xs font-bold transition cursor-pointer">
                         Lock / Log Out
@@ -284,7 +279,7 @@
                         <!-- Step 1: Modality Selection -->
                         <div>
                             <label class="block text-xs font-black uppercase tracking-wider text-slate-700 mb-2">
-                                1. Click Audio or Video <span class="hint-arrow" aria-hidden="true">&darr;</span>
+                                1. Click Audio or Video
                             </label>
                             <div class="grid grid-cols-2 gap-3" role="radiogroup" aria-label="Encounter Modality">
                                 <label class="cursor-pointer alive alive-a">
@@ -295,7 +290,7 @@
                                             <p class="text-xs sm:text-sm font-black text-slate-900 leading-tight">Audio (OPI)</p>
                                             <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Immediate Voice Relay</p>
                                         </div>
-                                        <span class="ml-auto shrink-0 inline-flex items-center gap-1 rounded-full border border-[#C4DEE9] bg-[#EEF6F9] px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-[#115C7B]">Select &rarr;</span>
+                                        <span class="ml-auto shrink-0 inline-flex items-center gap-1 rounded-full border border-[#C4DEE9] bg-[#EEF6F9] px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-[#115C7B]">Select</span>
                                     </div>
                                 </label>
                                 <label class="cursor-pointer alive alive-b">
@@ -306,7 +301,7 @@
                                             <p class="text-xs sm:text-sm font-black text-slate-900 leading-tight">Video Remote (VRI)</p>
                                             <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Two-Way Visual Interpreting</p>
                                         </div>
-                                        <span class="ml-auto shrink-0 inline-flex items-center gap-1 rounded-full border border-[#C4DEE9] bg-[#EEF6F9] px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-[#115C7B]">Select &rarr;</span>
+                                        <span class="ml-auto shrink-0 inline-flex items-center gap-1 rounded-full border border-[#C4DEE9] bg-[#EEF6F9] px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-[#115C7B]">Select</span>
                                     </div>
                                 </label>
                             </div>
@@ -373,7 +368,6 @@
                         >
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
                             <span>Connect a Medical Interpreter Now</span>
-                            <span aria-hidden="true">&rarr;</span>
                         </button>
 
                         <!-- Live Status Banner & Feedback -->
@@ -434,7 +428,7 @@
                     </p>
                     <button type="button" onclick="openBaaModal()"
                             class="alive w-full px-4 py-2.5 rounded-xl bg-[#115C7B] hover:bg-[#0C4659] text-white text-xs font-bold transition">
-                        Signed BAA ready &rarr;
+                        Signed BAA ready
                     </button>
                 </section>
 
@@ -493,7 +487,7 @@
                         </div>
                     </div>
                     <button type="submit" class="alive w-full bg-[#115C7B] hover:bg-[#0C4659] text-white font-bold py-2.5 px-4 rounded-xl text-xs transition">
-                        Generate signed BAA &rarr;
+                        Generate signed BAA
                     </button>
                     <p class="text-center text-[11px] text-slate-500">We reply the same business day. No sales calls unless you ask.</p>
                 </form>
@@ -627,7 +621,7 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-[#115C7B]"></span>
-                                <span class="text-xs font-bold text-slate-900 group-hover:text-[#115C7B]">Communicate with Roster Interpreters &rarr;</span>
+                                <span class="text-xs font-bold text-slate-900 group-hover:text-[#115C7B]">Communicate with Roster Interpreters</span>
                             </div>
                             <span class="text-[10px] text-slate-400">Remoto Roster</span>
                         </div>
@@ -638,7 +632,7 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-cyan-600"></span>
-                                <span class="text-xs font-bold text-slate-900 group-hover:text-[#115C7B]">Customer Encounters & Live Call Monitor &rarr;</span>
+                                <span class="text-xs font-bold text-slate-900 group-hover:text-[#115C7B]">Customer Encounters & Live Call Monitor</span>
                             </div>
                             <span class="text-[10px] text-slate-400">Live Calls</span>
                         </div>
@@ -647,10 +641,10 @@
 
                     <div class="grid grid-cols-2 gap-2 pt-1">
                         <a href="https://www.proz.com/remoto/user/portal-settings" target="_blank" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-center text-xs font-bold text-slate-700 hover:text-slate-900 transition">
-                            Portal Settings &rarr;
+                            Portal Settings
                         </a>
                         <a href="https://www.proz.com/remoto/b/mvhlsp/connect" target="_blank" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-center text-xs font-bold text-slate-700 hover:text-slate-900 transition">
-                            Card & Billing &rarr;
+                            Card & Billing
                         </a>
                     </div>
                 </div>
@@ -829,7 +823,7 @@
             const submitBtn = document.getElementById('dashboard-submit-btn');
             if (submitBtn) {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span> <span>Connect a Medical Interpreter Now</span> <span aria-hidden="true">&rarr;</span>';
+                submitBtn.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span> <span>Connect a Medical Interpreter Now</span>';
             }
             
             const alertBox = document.getElementById('dashboard-dispatch-alert');
@@ -1053,7 +1047,7 @@
                                 <span class="text-[11px] text-slate-600 block mt-0.5">Please kindly add a payment method to connect with your interpreter. Zero upfront fee.</span>
                             </div>
                             <button type="button" onclick="openStandbyActiveModal()" class="alive shrink-0 px-3 py-1.5 rounded-lg bg-[#115C7B] hover:bg-[#0C4659] text-white text-[11px] font-bold cursor-pointer transition">
-                                Complete Setup &rarr;
+                                Complete Setup
                             </button>
                         </div>
                     `;
@@ -1063,7 +1057,7 @@
                 }
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span> <span>Connect a Medical Interpreter Now</span> <span aria-hidden="true">&rarr;</span>';
+                btn.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span> <span>Connect a Medical Interpreter Now</span>';
             }
         }
 
@@ -1235,7 +1229,6 @@
                 <button type="button" onclick="openSecurePaymentLayer()" class="alive w-full sm:flex-1 py-3.5 px-5 rounded-xl bg-[#115C7B] hover:bg-[#0C4659] text-white font-bold text-xs uppercase tracking-wider text-center shadow-md shadow-[#115C7B]/20 transition cursor-pointer flex items-center justify-center gap-2">
                     <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                     <span>Add Payment Method (Secure Stripe Gateway)</span>
-                    <span>&rarr;</span>
                 </button>
                 <button type="button" onclick="closeStandbyActiveModal()" class="alive w-full sm:w-auto py-3.5 px-5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition cursor-pointer">
                     Return to Dispatch
