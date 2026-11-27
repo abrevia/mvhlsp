@@ -287,7 +287,14 @@ async function handleRequest(request, env) {
     }
   }
 
-  if (path === '/dashboard' || path === '/connect' || path === '/quickdial') {
+  // The clinic-facing service now lives on the single home page (mvhlsp.site/),
+  // so the old duplicate dialer URLs redirect there. /dashboard remains the
+  // private executive admin console.
+  if (path === '/connect' || path === '/quickdial') {
+    return Response.redirect(new URL('/', request.url).toString(), 301);
+  }
+
+  if (path === '/dashboard') {
     const res = await resolveAsset('/dashboard.html');
     if (res) return res;
   }

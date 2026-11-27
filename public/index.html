@@ -441,9 +441,9 @@
                     <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400">Contact</h2>
                     <p class="mt-4 flex items-center gap-2">
                         <a href="mailto:marcadeus@outlook.com" class="text-sm font-medium text-slate-200 transition-colors hover:text-white">marcadeus@outlook.com</a>
-                        <a href="/dashboard?admin=true" aria-label="Executive admin access" title="Executive admin access" class="rounded text-slate-500 transition-colors hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
+                        <button type="button" onclick="openAdminSignIn()" aria-label="Executive admin access" title="Executive admin access" class="rounded text-slate-500 transition-colors hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75M6.75 21h10.5a2.25 2.25 0 002.25-2.25v-6a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 12.75v6A2.25 2.25 0 006.75 21z"/></svg>
-                        </a>
+                        </button>
                     </p>
                 </div>
             </div>
@@ -502,24 +502,70 @@
                     <li class="flex items-center gap-2"><span class="text-emerald-600" aria-hidden="true">&check;</span> No card required to be connected</li>
                 </ul>
 
-                <div class="flex items-center justify-between gap-3 rounded-xl border border-line px-3.5 py-2.5">
-                    <label for="activate-pair" class="text-xs font-medium text-slate-600">Language pair</label>
-                    <select id="activate-pair" class="min-w-0 flex-1 rounded-lg border border-line bg-white px-2 py-1.5 text-xs font-semibold text-ink focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600">
-                        <option value="eng_spa">English &harr; Spanish</option>
-                        <option value="eng_ara">English &harr; Arabic</option>
-                        <option value="eng_vie">English &harr; Vietnamese</option>
-                        <option value="eng_zho">English &harr; Chinese</option>
-                        <option value="eng_por">English &harr; Portuguese</option>
-                        <option value="eng_hat">English &harr; Haitian Creole</option>
-                        <option value="spa_deu">Spanish &harr; German</option>
-                    </select>
-                    <button type="button" onclick="requestPair(this)" class="shrink-0 text-xs font-semibold text-brand-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">Switch</button>
+                <div class="space-y-2.5 rounded-xl border border-line p-3.5">
+                    <div class="flex items-center justify-between gap-3">
+                        <label for="activate-modality" class="text-xs font-medium text-slate-600">Modality</label>
+                        <select id="activate-modality" class="min-w-0 flex-1 rounded-lg border border-line bg-white px-2 py-1.5 text-xs font-semibold text-ink focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600">
+                            <option value="audio">OPI &mdash; over the phone</option>
+                            <option value="video">VRI &mdash; video</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between gap-3">
+                        <label for="activate-pair" class="text-xs font-medium text-slate-600">Language pair</label>
+                        <select id="activate-pair" class="min-w-0 flex-1 rounded-lg border border-line bg-white px-2 py-1.5 text-xs font-semibold text-ink focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600">
+                            <option value="eng_spa">English &harr; Spanish</option>
+                            <option value="eng_ara">English &harr; Arabic</option>
+                            <option value="eng_vie">English &harr; Vietnamese</option>
+                            <option value="eng_zho">English &harr; Chinese</option>
+                            <option value="eng_por">English &harr; Portuguese</option>
+                            <option value="eng_hat">English &harr; Haitian Creole</option>
+                            <option value="spa_deu">Spanish &harr; German</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between gap-3">
+                        <label for="activate-station" class="text-xs font-medium text-slate-600">Station / chart <span class="text-slate-400">(optional)</span></label>
+                        <input type="text" id="activate-station" maxlength="60" placeholder="e.g. Exam 2"
+                               class="min-w-0 flex-1 rounded-lg border border-line px-2 py-1.5 text-xs text-ink placeholder-slate-400 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600">
+                    </div>
+                    <button type="button" onclick="activateBackup(this)"
+                            class="inline-flex w-full items-center justify-center rounded-lg border border-line bg-[#F8FAFC] px-3 py-2 text-xs font-semibold text-ink transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">
+                        Start with these settings
+                    </button>
                 </div>
 
                 <p class="text-center text-[11px] text-slate-500">
                     Need a human now? Email <a href="mailto:marcadeus@outlook.com" class="font-semibold text-brand-700 hover:underline">marcadeus@outlook.com</a>
                 </p>
             </div>
+        </div>
+    </div>
+
+    <!-- ============================ ADMIN SIGN-IN MODAL ============================ -->
+    <div id="admin-login-modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="admin-login-title">
+        <div class="absolute inset-0 bg-ink/60 backdrop-blur-sm" data-close="admin-login-modal"></div>
+        <div class="relative w-full max-w-sm overflow-hidden rounded-2xl border border-line bg-white shadow-2xl">
+            <div class="flex items-center gap-2.5 border-b border-line bg-[#F8FAFC] px-5 py-4">
+                <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75M6.75 21h10.5a2.25 2.25 0 002.25-2.25v-6a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 12.75v6A2.25 2.25 0 006.75 21z"/></svg>
+                <h2 id="admin-login-title" class="text-sm font-bold text-ink">Executive sign-in</h2>
+                <button type="button" onclick="closeModal('admin-login-modal')" aria-label="Close" class="ml-auto rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
+            </div>
+            <form onsubmit="handleAdminSignInSubmit(event)" class="space-y-4 p-5">
+                <div>
+                    <label for="admin-user-id" class="mb-1.5 block text-xs font-semibold text-ink">Admin user</label>
+                    <input type="text" id="admin-user-id" value="alex@mvhlsp.site" readonly
+                           class="w-full rounded-xl border border-line bg-slate-50 px-3.5 py-2.5 text-sm text-slate-600">
+                </div>
+                <div>
+                    <label for="admin-signin-key" class="mb-1.5 block text-xs font-semibold text-ink">Access key</label>
+                    <input type="password" id="admin-signin-key" required autocomplete="current-password" placeholder="Access key"
+                           class="w-full rounded-xl border border-line px-3.5 py-2.5 text-sm text-ink placeholder-slate-400 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600">
+                </div>
+                <p id="admin-signin-error" class="hidden rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-medium text-rose-700"></p>
+                <button type="submit" id="admin-signin-submit"
+                        class="inline-flex w-full items-center justify-center rounded-xl bg-[#1D4ED8] px-6 py-3 text-sm font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#1E40AF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
+                    Sign in to console
+                </button>
+            </form>
         </div>
     </div>
 
@@ -783,7 +829,7 @@
 
             document.addEventListener('keydown', function (event) {
                 if (event.key !== 'Escape') return;
-                ['activate-modal', 'baa-modal', 'terms-modal', 'privacy-modal'].forEach(function (id) {
+                ['activate-modal', 'baa-modal', 'terms-modal', 'privacy-modal', 'admin-login-modal'].forEach(function (id) {
                     var modal = byId(id);
                     if (modal && !modal.classList.contains('hidden')) closeModal(id);
                 });
@@ -817,16 +863,20 @@
 
                 var pairSelect = byId('activate-pair');
                 var languagePair = pairSelect ? pairSelect.value : 'eng_spa';
+                var modalitySelect = byId('activate-modality');
+                var callType = modalitySelect ? modalitySelect.value : 'audio';
+                var stationInput = byId('activate-station');
+                var station = stationInput ? stationInput.value.trim() : '';
 
                 try {
                     var res = await fetch('/api/dispatch', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            call_type: 'audio',
+                            call_type: callType,
                             language_pair: languagePair,
                             client_name: 'MVHLSP Overflow Activation',
-                            notes: 'Overflow activation from mvhlsp.site'
+                            notes: station ? ('Station: ' + station) : 'Overflow activation from mvhlsp.site'
                         })
                     });
                     var data = await res.json().catch(function () { return {}; });
@@ -911,6 +961,48 @@
                 byId('baa-form-container').classList.add('hidden');
                 byId('baa-success-container').classList.remove('hidden');
                 if (form) form.reset();
+            };
+
+            /* ---------- Admin sign-in (footer padlock) ---------- */
+            window.openAdminSignIn = function openAdminSignIn() {
+                var err = byId('admin-signin-error');
+                if (err) err.classList.add('hidden');
+                openModal('admin-login-modal');
+            };
+
+            window.handleAdminSignInSubmit = async function handleAdminSignInSubmit(event) {
+                event.preventDefault();
+                var keyInput = byId('admin-signin-key');
+                var err = byId('admin-signin-error');
+                var submit = byId('admin-signin-submit');
+                var key = keyInput ? keyInput.value.trim() : '';
+                if (!key) return;
+
+                if (submit) { submit.disabled = true; submit.textContent = 'Verifying…'; }
+                try {
+                    var res = await fetch('/api/admin/verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ admin_key: key })
+                    });
+                    var data = await res.json().catch(function () { return {}; });
+                    if (res.ok && data && data.success) {
+                        try { sessionStorage.setItem('mvhlsp_admin_key', key); } catch (e) {}
+                        window.location.href = '/dashboard';
+                        return;
+                    }
+                    if (err) {
+                        err.textContent = (data && data.error) ? data.error : 'Invalid access key.';
+                        err.classList.remove('hidden');
+                    }
+                } catch (e2) {
+                    if (err) {
+                        err.textContent = 'Sign-in is temporarily unavailable. Try again in a moment.';
+                        err.classList.remove('hidden');
+                    }
+                } finally {
+                    if (submit) { submit.disabled = false; submit.textContent = 'Sign in to console'; }
+                }
             };
 
             /* ---------- Terms modal ---------- */
