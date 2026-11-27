@@ -310,6 +310,12 @@ async function handleRequest(request, env) {
     if (res) return res;
   }
 
+  // Legal pages
+  if (path === '/terms' || path === '/terms.html') {
+    const res = await resolveAsset('/terms.html');
+    if (res) return res;
+  }
+
   // Marketing / pricing page
   if (path === '/pricing' || path === '/index.html') {
     const res = await resolveAsset('/index.html');
