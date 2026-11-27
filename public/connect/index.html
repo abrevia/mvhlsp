@@ -8,80 +8,10 @@
     <link rel="canonical" href="https://mvhlsp.site/">
     <link rel="icon" href="logo.jpg">
     <link rel="stylesheet" href="/fonts.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        slate: { 50:'#FAFAF9', 100:'#F3F3F1', 200:'#E5E5E2', 300:'#D2D2CE', 400:'#7C7C75', 500:'#6A6A63', 600:'#585852', 700:'#46463F', 800:'#363630', 900:'#2A2A26' }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            color: #2A2A26;
-            background-color: #F8FAFC;
-        }
-        @media print {
-            body { background: white !important; }
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
-        }
-        .print-only { display: none; }
-        @keyframes pulse-subtle {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.85; transform: scale(1.02); }
-        }
-        .animate-live {
-            animation: pulse-subtle 2s infinite ease-in-out;
-        }
+    <link rel="stylesheet" href="/assets/tailwind.css">
     
-        /* Gentle "clickable" pulse: slow breathing ring (respects reduced motion) */
-        @keyframes alivePulse {
-            0%, 100% {
-                opacity: 0.35;
-                box-shadow: 0 0 0 0 rgba(17, 92, 123, 0);
-            }
-            50% {
-                opacity: 1;
-                box-shadow: 0 0 12px 2px rgba(17, 92, 123, 0.16);
-            }
-        }
-        .alive { position: relative; }
-        .alive::after {
-            content: "";
-            position: absolute;
-            inset: -4px;
-            border-radius: inherit;
-            border: 2px solid rgba(17, 92, 123, 0.35);
-            opacity: 0.35;
-            pointer-events: none;
-            animation: alivePulse 4.5s ease-in-out infinite;
-        }
 
-        /* Alternating attention pulse for the two critical modality cards */
-        .alive-a::after, .alive-b::after {
-            inset: -5px;
-            border-width: 2px;
-            border-color: rgba(17, 92, 123, 0.45);
-        }
-        .alive-b::after { animation-delay: -2.25s; }
-        @media (prefers-reduced-motion: reduce) {
-            .alive::after { animation: none !important; opacity: 0 !important; }
-        }
-        /* Modality card motion is driven by anime.js (soft easing) */
-
-        .alive-a > div, .alive-b > div { will-change: transform; }
-        @media (prefers-reduced-motion: reduce) {
-            .alive-a > div, .alive-b > div, .hint-arrow { animation: none !important; }
-        }
-
-    </style>
+    <link rel="stylesheet" href="/assets/css/dialer.css">
 </head>
 <body class="min-h-screen flex flex-col bg-slate-50 text-slate-900">
 
@@ -155,10 +85,10 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button type="button" onclick="openAdminConsoleModal()" class="alive px-3 py-1.5 bg-[#115C7B] hover:bg-[#0C4659] text-white rounded-lg text-xs font-bold transition cursor-pointer">
+                    <button type="button" data-c="h1" class="alive px-3 py-1.5 bg-[#115C7B] hover:bg-[#0C4659] text-white rounded-lg text-xs font-bold transition cursor-pointer">
                         Admin Switchboard
                     </button>
-                    <button type="button" onclick="adminLogout()" class="alive px-3 py-1.5 bg-slate-800 hover:bg-rose-900/60 text-slate-300 hover:text-rose-200 border border-slate-700 rounded-lg text-xs font-bold transition cursor-pointer">
+                    <button type="button" data-c="h2" class="alive px-3 py-1.5 bg-slate-800 hover:bg-rose-900/60 text-slate-300 hover:text-rose-200 border border-slate-700 rounded-lg text-xs font-bold transition cursor-pointer">
                         Lock / Log Out
                     </button>
                 </div>
@@ -211,7 +141,7 @@
                     </button>
 
                     <!-- Dedicated Close Window Button -->
-                    <button type="button" id="close-encounter-window-btn" onclick="forceCloseEncounterWindow()" class="alive px-3.5 py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 hover:text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl border border-slate-700 hover:border-slate-500 shadow transition flex items-center gap-1.5 cursor-pointer" title="Close Window & Return to Dashboard">
+                    <button type="button" id="close-encounter-window-btn" data-c="h3" class="alive px-3.5 py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 hover:text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl border border-slate-700 hover:border-slate-500 shadow transition flex items-center gap-1.5 cursor-pointer" title="Close Window & Return to Dashboard">
                         <svg class="w-3.5 h-3.5 text-slate-400 shrink-0 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg> <span>Close Window</span>
                     </button>
                 </div>
@@ -426,7 +356,7 @@
                     <p class="text-xs font-medium text-slate-700 leading-relaxed">
                         A pre-signed Business Associate Agreement, executed by our Managing Director, is ready for your clinic before the first call.
                     </p>
-                    <button type="button" onclick="openBaaModal()"
+                    <button type="button" data-c="h4"
                             class="alive w-full px-4 py-2.5 rounded-xl bg-[#115C7B] hover:bg-[#0C4659] text-white text-xs font-bold transition">
                         Signed BAA ready
                     </button>
@@ -457,18 +387,18 @@
 
     <!-- SIGNED BAA MODAL -->
     <div id="baa-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-        <div class="absolute inset-0" onclick="closeBaaModal()"></div>
+        <div class="absolute inset-0" data-c="h5"></div>
         <div class="relative bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden">
             <div class="bg-slate-900 px-5 py-4 flex items-center justify-between text-white">
                 <div>
                     <h3 class="text-sm font-extrabold tracking-tight">Signed HIPAA BAA</h3>
                     <p class="text-[11px] text-slate-300 mt-0.5">Pre-signed by the Managing Director - ready before your first call.</p>
                 </div>
-                <button type="button" onclick="closeBaaModal()" class="alive text-slate-400 hover:text-white transition p-1 rounded-lg hover:bg-slate-800" aria-label="Close">&times;</button>
+                <button type="button" data-c="h5" class="alive text-slate-400 hover:text-white transition p-1 rounded-lg hover:bg-slate-800" aria-label="Close">&times;</button>
             </div>
 
             <div id="baa-form-container" class="p-5 max-h-[65vh] overflow-y-auto text-xs text-slate-600">
-                <form id="baa-request-form" onsubmit="handleBaaSubmit(event)" class="space-y-3.5">
+                <form id="baa-request-form" data-s="h7" class="space-y-3.5">
                     <div>
                         <label for="baa-org-name" class="block text-slate-700 font-bold mb-1">Clinic / organization name *</label>
                         <input type="text" id="baa-org-name" required placeholder="e.g. Memorial Regional Clinic"
@@ -507,10 +437,10 @@
                     <div><strong>Authorized by:</strong> Alejandro Diaz Guerrero, Founder &amp; CEO</div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-2">
-                    <button type="button" onclick="downloadBaaDocument()" class="alive w-full bg-[#115C7B] hover:bg-[#0C4659] text-white font-bold py-2.5 px-4 rounded-xl text-xs transition">
+                    <button type="button" data-c="h8" class="alive w-full bg-[#115C7B] hover:bg-[#0C4659] text-white font-bold py-2.5 px-4 rounded-xl text-xs transition">
                         Print official BAA
                     </button>
-                    <button type="button" onclick="closeBaaModal()" class="alive w-full px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs transition">
+                    <button type="button" data-c="h5" class="alive w-full px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs transition">
                         Done
                     </button>
                 </div>
@@ -523,19 +453,19 @@
         <div class="relative bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden">
             <div class="bg-slate-900 px-5 py-3 flex items-center justify-end text-white">
                 <h3 id="language-picker-title" class="sr-only">Choose the language for this encounter</h3>
-                <button type="button" onclick="closeLanguagePicker()" class="alive text-slate-400 hover:text-white transition p-1 rounded-lg hover:bg-slate-800" aria-label="Close">&times;</button>
+                <button type="button" data-c="h10" class="alive text-slate-400 hover:text-white transition p-1 rounded-lg hover:bg-slate-800" aria-label="Close">&times;</button>
             </div>
             <div class="p-4 max-h-[60vh] overflow-y-auto">
-                <input type="search" id="language-search" placeholder="Search language..." oninput="filterLanguages(this.value)"
+                <input type="search" id="language-search" placeholder="Search language..." data-i="h11"
                        class="w-full mb-3 px-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-none focus:border-[#115C7B] focus:ring-1 focus:ring-[#115C7B]">
                 <div id="language-grid" class="grid grid-cols-2 gap-2">
-                    <button type="button" data-lang="spa" data-name="spanish (latin america)" onclick="chooseLanguage('eng_spa', 'Spanish (Latin America)', this)" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Spanish (Latin America)</button>
-                    <button type="button" data-lang="ara" data-name="arabic" onclick="chooseLanguage('eng_ara', 'Arabic', this)" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Arabic</button>
-                    <button type="button" data-lang="zho" data-name="chinese" onclick="chooseLanguage('eng_zho', 'Chinese', this)" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Chinese</button>
-                    <button type="button" data-lang="vie" data-name="vietnamese" onclick="chooseLanguage('eng_vie', 'Vietnamese', this)" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Vietnamese</button>
-                    <button type="button" data-lang="hat" data-name="haitian creole" onclick="chooseLanguage('eng_hat', 'Haitian Creole', this)" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Haitian Creole</button>
-                    <button type="button" data-lang="por" data-name="portuguese" onclick="chooseLanguage('eng_por', 'Portuguese', this)" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Portuguese</button>
-                    <button type="button" data-lang="rus" data-name="russian" onclick="chooseLanguage('eng_rus', 'Russian', this)" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Russian</button>
+                    <button type="button" data-lang="spa" data-name="spanish (latin america)" data-c="h12" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Spanish (Latin America)</button>
+                    <button type="button" data-lang="ara" data-name="arabic" data-c="h13" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Arabic</button>
+                    <button type="button" data-lang="zho" data-name="chinese" data-c="h14" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Chinese</button>
+                    <button type="button" data-lang="vie" data-name="vietnamese" data-c="h15" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Vietnamese</button>
+                    <button type="button" data-lang="hat" data-name="haitian creole" data-c="h16" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Haitian Creole</button>
+                    <button type="button" data-lang="por" data-name="portuguese" data-c="h17" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Portuguese</button>
+                    <button type="button" data-lang="rus" data-name="russian" data-c="h18" class="lang-btn text-left px-3 py-2 rounded-xl border border-slate-200 hover:border-[#115C7B] hover:bg-[#EEF6F9] text-xs font-bold text-slate-700 transition">Russian</button>
                 </div>
             </div>
         </div>
@@ -553,7 +483,7 @@
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
                     <h3 class="text-sm sm:text-base font-extrabold tracking-tight">Executive Admin Switchboard</h3>
                 </div>
-                <button type="button" onclick="closeAdminModal()" class="alive text-slate-400 hover:text-white transition cursor-pointer p-1 rounded-lg hover:bg-slate-800" title="Close">
+                <button type="button" data-c="h19" class="alive text-slate-400 hover:text-white transition cursor-pointer p-1 rounded-lg hover:bg-slate-800" title="Close">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
@@ -564,7 +494,7 @@
                     Enter executive credentials to unlock <strong>admin-granted free minutes test routing</strong> and direct switchboard communications with interpreters and clients.
                 </div>
 
-                <form id="admin-login-form" onsubmit="handleAdminLogin(event)" class="space-y-3.5">
+                <form id="admin-login-form" data-s="h20" class="space-y-3.5">
                     <div>
                         <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Admin User ID</label>
                         <input type="text" id="admin-user-id" value="alex@mvhlsp.site" readonly class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-700 cursor-not-allowed">
@@ -577,7 +507,7 @@
                     <div id="admin-login-error" class="hidden p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium"></div>
 
                     <div class="pt-2 flex items-center justify-end gap-2.5">
-                        <button type="button" onclick="closeAdminModal()" class="alive px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition">
+                        <button type="button" data-c="h19" class="alive px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition">
                             Cancel
                         </button>
                         <button type="submit" id="admin-login-submit" class="alive px-5 py-2.5 bg-[#115C7B] hover:bg-[#0C4659] active:scale-95 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-md shadow-[#115C7B]/20 cursor-pointer">
@@ -605,7 +535,7 @@
                     <div class="flex items-center justify-between">
                         <div class="text-xs font-bold text-slate-800">Free Minutes Test Routing</div>
                         <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="admin-test-mode-toggle" checked onchange="toggleAdminTestMode(this)" class="sr-only peer">
+                            <input type="checkbox" id="admin-test-mode-toggle" checked data-ch="h22" class="sr-only peer">
                             <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
                         </label>
                     </div>
@@ -652,10 +582,10 @@
 
                 <!-- Footer Actions -->
                 <div class="pt-2 border-t border-slate-200 flex items-center justify-between">
-                    <button type="button" onclick="adminLogout()" class="alive px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition cursor-pointer">
+                    <button type="button" data-c="h2" class="alive px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition cursor-pointer">
                         Lock / Log Out
                     </button>
-                    <button type="button" onclick="closeAdminModal()" class="alive px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition cursor-pointer">
+                    <button type="button" data-c="h19" class="alive px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition cursor-pointer">
                         Return to Dashboard
                     </button>
                 </div>
@@ -676,7 +606,7 @@
                 <a href="/pricing" class="hover:underline">Pricing</a>
                 <span>•</span>
                 <a href="mailto:info@mvhlsp.site" class="hover:underline">Support: info@mvhlsp.site</a>
-                <button type="button" onclick="handleAdminHeaderClick()" aria-label="Executive admin access" title="Executive admin access" class="alive inline-flex items-center text-slate-400 hover:text-[#115C7B] transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75M6.75 21h10.5a2.25 2.25 0 002.25-2.25v-6a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 12.75v6A2.25 2.25 0 006.75 21z"/></svg></button>
+                <button type="button" data-c="h25" aria-label="Executive admin access" title="Executive admin access" class="alive inline-flex items-center text-slate-400 hover:text-[#115C7B] transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75M6.75 21h10.5a2.25 2.25 0 002.25-2.25v-6a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 12.75v6A2.25 2.25 0 006.75 21z"/></svg></button>
             </div>
         </div>
     </footer>
@@ -685,513 +615,13 @@
     <!-- CLIENT JAVASCRIPT AUTOMATION ENGINE -->
     <!-- ================================================================= -->
     <script src="/vendor/anime.min.js"></script>
-    <script>
-        // State variables
-        let callStartTime = null;
-        let callTimerInterval = null;
-        let activeEncounterId = null;
-        let activeModality = 'audio';
-        let activeReference = '';
-
-        // Executive Admin State
-        const ADMIN_STORAGE_KEY = 'mvhlsp_admin_key';
-        let isAdminAuthenticated = false;
-        let adminTestModeEnabled = true;
-
-        function getStoredAdminKey() {
-            try { localStorage.removeItem(ADMIN_STORAGE_KEY); } catch (e) {}
-        return sessionStorage.getItem(ADMIN_STORAGE_KEY) || '';
-        }
-
-        function checkAdminAuthOnLoad() {
-            const key = getStoredAdminKey();
-            if (key) {
-                isAdminAuthenticated = true;
-                updateAdminUIState(true);
-            } else {
-                isAdminAuthenticated = false;
-                updateAdminUIState(false);
-            }
-        }
-
-        function updateAdminUIState(isAuth) {
-            const btnLabel = document.getElementById('admin-header-label');
-            const headerBtn = document.getElementById('admin-header-btn');
-            const banner = document.getElementById('admin-active-banner');
-            const loginView = document.getElementById('admin-login-view');
-            const consoleView = document.getElementById('admin-console-view');
-
-            if (isAuth) {
-                if (btnLabel) btnLabel.textContent = 'Admin (Active)';
-                if (headerBtn) {
-                    headerBtn.className = 'px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white border border-emerald-500 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs';
-                }
-                if (banner) banner.classList.remove('hidden');
-                if (loginView) loginView.classList.add('hidden');
-                if (consoleView) consoleView.classList.remove('hidden');
-            } else {
-                if (btnLabel) btnLabel.textContent = 'Admin';
-                if (headerBtn) {
-                    headerBtn.className = 'px-3 py-1.5 bg-slate-900 hover:bg-[#115C7B] text-white border border-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs';
-                }
-                if (banner) banner.classList.add('hidden');
-                if (loginView) loginView.classList.remove('hidden');
-                if (consoleView) consoleView.classList.add('hidden');
-            }
-        }
-
-        function handleAdminHeaderClick() {
-            const modal = document.getElementById('admin-modal');
-            if (modal) modal.classList.remove('hidden');
-        }
-
-        function openAdminConsoleModal() {
-            const modal = document.getElementById('admin-modal');
-            if (modal) modal.classList.remove('hidden');
-        }
-
-        function closeAdminModal() {
-            const modal = document.getElementById('admin-modal');
-            if (modal) modal.classList.add('hidden');
-        }
-
-        async function handleAdminLogin(e) {
-            e.preventDefault();
-            const keyInput = document.getElementById('admin-access-key');
-            const errBox = document.getElementById('admin-login-error');
-            const submitBtn = document.getElementById('admin-login-submit');
-            const keyVal = keyInput.value.trim();
-
-            if (!keyVal) return;
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Verifying...';
-            if (errBox) errBox.classList.add('hidden');
-
-            try {
-                const res = await fetch('/api/admin/verify', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ admin_key: keyVal })
-                });
-
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    sessionStorage.setItem(ADMIN_STORAGE_KEY, keyVal);
-                    isAdminAuthenticated = true;
-                    updateAdminUIState(true);
-                    keyInput.value = '';
-                } else {
-                    throw new Error(data.error || 'Invalid Admin Access Key');
-                }
-            } catch (err) {
-                if (errBox) {
-                    errBox.textContent = err.message || 'Authentication failed. Please verify executive access key.';
-                    errBox.classList.remove('hidden');
-                }
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Authenticate & Unlock';
-            }
-        }
-
-        function toggleAdminTestMode(chk) {
-            adminTestModeEnabled = chk.checked;
-        }
-
-        function adminLogout() {
-            localStorage.removeItem(ADMIN_STORAGE_KEY);
-            sessionStorage.removeItem(ADMIN_STORAGE_KEY);
-            isAdminAuthenticated = false;
-            updateAdminUIState(false);
-            closeAdminModal();
-        }
-
-        // Close encounter window immediately without browser prompt
-        function forceCloseEncounterWindow() {
-            if (callTimerInterval) {
-                clearInterval(callTimerInterval);
-                callTimerInterval = null;
-            }
-            const screen = document.getElementById('encounter-active-screen');
-            const iframe = document.getElementById('encounter-iframe');
-            if (iframe) iframe.src = 'about:blank';
-            if (screen) screen.classList.add('hidden');
-            
-            const timerDisplay = document.getElementById('active-timer-display');
-            if (timerDisplay) timerDisplay.textContent = '00:00:00';
-            
-            const submitBtn = document.getElementById('dashboard-submit-btn');
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span> <span>Connect a Medical Interpreter Now</span>';
-            }
-            
-            const alertBox = document.getElementById('dashboard-dispatch-alert');
-            if (alertBox) alertBox.classList.add('hidden');
-
-            const form = document.getElementById('dashboard-dispatch-form');
-            if (form) form.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // 1. Availability check on page mount
-        async function fetchLiveAvailability() {
-            try {
-                const res = await fetch('/api/availability');
-                if (res.ok) {
-                    const data = await res.json();
-                    const statusText = document.getElementById('header-status-text');
-                    let count = 1049;
-                    if (data && data.data && data.data[0] && data.data[0].interpreters_total) {
-                        count = data.data[0].interpreters_total;
-                    }
-                    if (statusText) {
-                        statusText.textContent = 'OPI & VRI Standby';
-                    }
-                }
-            } catch (e) {
-                // Silently keep default high-availability badge
-            }
-        }
-        fetchLiveAvailability();
-        setInterval(fetchLiveAvailability, 30000);
-
-        // 2. URL Parameter pre-selection (e.g., /dashboard?type=video) & Admin auth check
-        window.addEventListener('DOMContentLoaded', () => {
-            checkAdminAuthOnLoad();
-
-            const urlParams = new URLSearchParams(window.location.search);
-            // No admin popup on arrival. The console opens only when this tab is already
-            // signed in (you reached it from the padlock sign-in on the main site).
-            if (getStoredAdminKey()) {
-                handleAdminHeaderClick();
-            }
-
-            const typeParam = urlParams.get('type');
-            if (typeParam === 'video') {
-                const videoRadio = document.querySelector('input[name="call_type"][value="video"]');
-                if (videoRadio) videoRadio.checked = true;
-            } else if (typeParam === 'audio') {
-                const audioRadio = document.querySelector('input[name="call_type"][value="audio"]');
-                if (audioRadio) audioRadio.checked = true;
-            }
-        });
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeAdminModal();
-                closeBaaModal();
-                closeLanguagePicker();
-            }
-        });
-
-        // Signed BAA flow
-        function openBaaModal() {
-            document.getElementById('baa-form-container').classList.remove('hidden');
-            document.getElementById('baa-success-container').classList.add('hidden');
-            document.getElementById('baa-modal').classList.remove('hidden');
-        }
-        function closeBaaModal() {
-            document.getElementById('baa-modal').classList.add('hidden');
-        }
-        function handleBaaSubmit(e) {
-            e.preventDefault();
-            document.getElementById('baa-confirmed-org').textContent = document.getElementById('baa-org-name').value.trim();
-            document.getElementById('baa-confirmed-name').textContent = document.getElementById('baa-contact-name').value.trim();
-            document.getElementById('baa-confirmed-email').textContent = document.getElementById('baa-email').value.trim();
-            document.getElementById('baa-form-container').classList.add('hidden');
-            document.getElementById('baa-success-container').classList.remove('hidden');
-        }
-
-
-        // Resume the pulse if the browser froze animations while the tab was hidden
-        document.addEventListener('visibilitychange', function () {
-            if (document.hidden) return;
-            document.querySelectorAll('.alive-a > div, .alive-b > div').forEach(function (el) {
-                el.getAnimations().forEach(function (a) { if (a.playState === 'paused') a.play(); });
-            });
-        });
-
-
-        // Soft alternating motion for the two critical modality cards (anime.js)
-        (function initSoftCardPulse() {
-            if (!window.anime) return;
-            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-            var cards = document.querySelectorAll('.alive-a > div, .alive-b > div');
-            if (cards.length < 2) return;
-            var motion = {
-                translateY: [0, -4],
-                scale: [1, 1.012],
-                boxShadow: [
-                    '0 0 0 0px rgba(17,92,123,0)',
-                    '0 0 0 7px rgba(17,92,123,0.18)'
-                ],
-                duration: 1700,
-                easing: 'easeInOutSine',
-                direction: 'alternate',
-                loop: true
-            };
-            anime(Object.assign({ targets: cards[0], delay: 0 }, motion));
-            anime(Object.assign({ targets: cards[1], delay: 1700 }, motion));
-        })();
-
-        // 3. Language picker (opened by the Connect button)
-        function openLanguagePicker() {
-            const modal = document.getElementById('language-picker');
-            if (modal) modal.classList.remove('hidden');
-            const search = document.getElementById('language-search');
-            if (search) { search.value = ''; filterLanguages(''); }
-        }
-        function closeLanguagePicker() {
-            const modal = document.getElementById('language-picker');
-            if (modal) modal.classList.add('hidden');
-        }
-        function filterLanguages(q) {
-            const needle = (q || '').toLowerCase().trim();
-            document.querySelectorAll('.lang-btn').forEach(function (b) {
-                const name = b.getAttribute('data-name') || '';
-                b.classList.toggle('hidden', needle ? name.indexOf(needle) === -1 : false);
-            });
-        }
-        function chooseLanguage(pairCode, name, btn) {
-            closeLanguagePicker();
-            const alertBox = document.getElementById('dashboard-dispatch-alert');
-            if (alertBox) {
-                alertBox.classList.remove('hidden', 'bg-rose-100', 'text-rose-800');
-                alertBox.classList.add('bg-cyan-50', 'text-cyan-800', 'border', 'border-cyan-200');
-                alertBox.textContent = 'Requesting a ' + name + ' interpreter...';
-            }
-            runDispatch(pairCode);
-        }
-
-        // 3. Form Dispatch Handler
-        let pendingDispatch = null;
-
-        document.getElementById('dashboard-dispatch-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            pendingDispatch = {
-                callType: document.querySelector('input[name="call_type"]:checked').value,
-                refVal: document.getElementById('dispatch-client-ref').value.trim() || 'Clinic Station 1',
-                department: document.getElementById('dispatch-department').value
-            };
-            openLanguagePicker();
-        });
-
-        async function runDispatch(pairCode) {
-            const btn = document.getElementById('dashboard-submit-btn');
-            const alertBox = document.getElementById('dashboard-dispatch-alert');
-            const callType = pendingDispatch.callType;
-            const refVal = pendingDispatch.refVal;
-            const department = pendingDispatch.department;
-
-            activeModality = callType;
-            activeReference = refVal;
-
-            btn.disabled = true;
-            btn.innerHTML = '<span class="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span> <span>Contacting Switchboard...</span>';
-            
-            alertBox.classList.remove('hidden', 'bg-rose-100', 'text-rose-800');
-            alertBox.classList.add('bg-cyan-50', 'text-cyan-800', 'border', 'border-cyan-200');
-            alertBox.textContent = 'Allocating encrypted channel to frontline medical interpreter...';
-
-            const adminKey = getStoredAdminKey();
-            const headers = { 'Content-Type': 'application/json' };
-            const useAdminTestMinutes = Boolean(isAdminAuthenticated && adminTestModeEnabled && adminKey);
-            if (useAdminTestMinutes) {
-                headers['x-admin-key'] = adminKey;
-            }
-
-            try {
-                const response = await fetch('/api/dispatch', {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify({
-                        call_type: callType,
-                        client_name: refVal,
-                        notes: `Department: ${department} • Dispatched from MVHLSP Clinical Dashboard`,
-                        external_reference: `MV-${Date.now()}`,
-                        language_pair: pairCode,
-                        test_call: useAdminTestMinutes
-                    })
-                });
-
-                const data = await response.json();
-                if (!response.ok || !data.join_url) {
-                    throw new Error(data.error || 'Switchboard did not issue a secure encounter token.');
-                }
-
-                activeEncounterId = data.id || `ENC-${Date.now()}`;
-                
-                alertBox.classList.remove('bg-cyan-50', 'text-cyan-800', 'border-cyan-200');
-                alertBox.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
-                alertBox.textContent = 'Encounter allocated! Launching secure clinical room...';
-
-                // Transition UI to the Active Encounter Screen (In-Page)
-                launchActiveEncounter(data.join_url);
-
-            } catch (err) {
-                alertBox.classList.remove('bg-cyan-50', 'text-cyan-800', 'border-cyan-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200');
-                const errMsg = (err.message || '').toLowerCase();
-                const isPaymentNeeded = errMsg.includes('payment') || errMsg.includes('card') || errMsg.includes('balance') || errMsg.includes('credit') || errMsg.includes('invoice');
-
-                if (isPaymentNeeded) {
-                    // Trigger cordial Standby Active reassurance modal
-                    openStandbyActiveModal();
-                    alertBox.classList.add('bg-cyan-50', 'text-[#115C7B]', 'border', 'border-cyan-200');
-                    alertBox.innerHTML = `
-                        <div class="flex items-center justify-between text-left gap-2">
-                            <div>
-                                <span class="font-bold flex items-center gap-1.5 text-emerald-700">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                    <span>Standby Active:</span> Channel Ready.
-                                </span>
-                                <span class="text-[11px] text-slate-600 block mt-0.5">Please kindly add a payment method to connect with your interpreter. Zero upfront fee.</span>
-                            </div>
-                            <button type="button" onclick="openStandbyActiveModal()" class="alive shrink-0 px-3 py-1.5 rounded-lg bg-[#115C7B] hover:bg-[#0C4659] text-white text-[11px] font-bold cursor-pointer transition">
-                                Complete Setup
-                            </button>
-                        </div>
-                    `;
-                } else {
-                    alertBox.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
-                    alertBox.innerHTML = `<span>Notice: ${err.message}</span><br><span class="text-[11px] mt-1 inline-block text-slate-600">Clinical Support Desk: <a href="mailto:info@mvhlsp.site" class="underline font-bold text-[#115C7B]">info@mvhlsp.site</a></span>`;
-                }
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span> <span>Connect a Medical Interpreter Now</span>';
-            }
-        }
-
-        
-        function openStandbyActiveModal() {
-            const modal = document.getElementById('standby-active-modal');
-            if (modal) modal.classList.remove('hidden');
-        }
-        function closeStandbyActiveModal() {
-
-        function openSecurePaymentLayer() {
-            const w = 560;
-            const h = 760;
-            const left = Math.max(0, (window.screen.width - w) / 2);
-            const top = Math.max(0, (window.screen.height - h) / 2);
-            const win = window.open(
-                'https://www.proz.com/remoto/b/mvhlsp/connect',
-                'MVHLSPSecureStripeGateway',
-                `width=${w},height=${h},top=${top},left=${left},status=no,toolbar=no,menubar=no,location=yes,resizable=yes,scrollbars=yes`
-            );
-            if (win) {
-                win.focus();
-            }
-        }
-
-            const modal = document.getElementById('standby-active-modal');
-            if (modal) modal.classList.add('hidden');
-        }
-
-        // Printable BAA generator
-        // Printable BAA Generator
-        function downloadBaaDocument() {
-            const org = document.getElementById('baa-confirmed-org').textContent || 'Healthcare Organization';
-            const name = document.getElementById('baa-confirmed-name').textContent || 'Authorized Clinician';
-            const email = document.getElementById('baa-confirmed-email').textContent || 'info@mvhlsp.site';
-            const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`<!DOCTYPE html><html><head><title>HIPAA BAA - ${org} & MVHLSP</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding:36px;color:#2A2A26;line-height:1.5;font-size:12px}h1{font-size:18px;color:#115C7B;margin-bottom:4px;text-transform:uppercase}h2{font-size:13px;margin-top:16px;margin-bottom:6px;border-bottom:1px solid #C4DEE9;padding-bottom:4px;color:#115C7B}.badge{display:inline-block;background:#EEF6F9;border:1px solid #C4DEE9;color:#115C7B;font-weight:bold;font-size:10px;padding:2px 8px;border-radius:4px;margin-bottom:16px}.details{background:#f8fafc;border:1px solid #e2e8f0;padding:12px;border-radius:8px;margin:16px 0}.signatures{margin-top:30px;display:flex;justify-content:space-between;gap:30px}.sig-block{flex:1;border-top:1px solid #cbd5e1;padding-top:8px}@media print{body{padding:20px}}</style></head><body><div class="badge">HIPAA / HITECH Omnibus Compliant â€¢ 45 CFR Â§ 164.502(e) & Â§ 164.504(e)</div><h1>Business Associate Agreement (BAA)</h1><p><strong>Effective Date:</strong> ${today}</p><div class="details"><p><strong>Covered Entity:</strong> ${org}</p><p><strong>Authorized Signatory:</strong> ${name} (${email})</p><p><strong>Business Associate:</strong> MVHLSP (Specialized Medical Interpreting Collective)</p></div><h2>1. Neutral Linguistic Conduit & Telecommunications Scope</h2><p>Business Associate provides specialized real-time oral and video interpretation (OPI/VRI). In accordance with the HHS HIPAA Privacy Rule (45 CFR Â§ 164.502) and the Neutral Conduit Doctrine, transmission of transient verbal/visual Protected Health Information (PHI) occurs with Zero-Data-Trace (ZDT). No audio, video, or clinical communication is recorded, stored, mined, or retained.</p><h2>2. Safeguards and Regulatory Obligations</h2><p>Business Associate maintains administrative, physical, and technical safeguards in compliance with 45 CFR Â§ 164.308, Â§ 164.310, and Â§ 164.312, ensuring all interpreters are bound by statutory confidentiality and HIPAA omnibus mandates.</p><h2>3. Execution & Authorization</h2><div class="signatures"><div class="sig-block"><p><strong>Covered Entity / Healthcare Provider:</strong></p><p><strong>Entity:</strong> ${org}</p><p><strong>Signed by:</strong> ${name}</p><p><strong>Date:</strong> ${today}</p></div><div class="sig-block"><p><strong>Business Associate: MVHLSP</strong></p><p><strong>Signed by:</strong> Alejandro Diaz Guerrero</p><p><strong>Title:</strong> Founder & CEO, MVHLSP</p><p><strong>Date:</strong> ${today}</p><img src="signature.jpg" style="height:38px;margin-top:4px" alt="Signature"></div></div><script>window.onload=function(){window.print()}<\/script></body></html>`);
-            printWindow.document.close();
-        }
-        window.downloadBaaDocument = downloadBaaDocument;
-
-        // 4. In-Page Encounter Launcher
-        function launchActiveEncounter(joinUrl) {
-            const screen = document.getElementById('encounter-active-screen');
-            const iframe = document.getElementById('encounter-iframe');
-            const overlay = document.getElementById('iframe-loading-overlay');
-            const badge = document.getElementById('active-modality-badge');
-            const refText = document.getElementById('active-ref-text');
-            const sessId = document.getElementById('active-session-id');
-
-            badge.textContent = activeModality === 'video' ? 'Video (VRI)' : 'Audio (OPI)';
-            badge.className = activeModality === 'video' 
-                ? 'text-[10px] uppercase font-black px-2 py-0.5 rounded bg-cyan-900 text-cyan-200 border border-cyan-500/50' 
-                : 'text-[10px] uppercase font-black px-2 py-0.5 rounded bg-emerald-900 text-emerald-200 border border-emerald-500/50';
-            
-            refText.textContent = activeReference;
-            sessId.textContent = activeEncounterId;
-
-            // Show active encounter screen and smoothly scroll into view
-            screen.classList.remove('hidden');
-            overlay.classList.remove('hidden', 'opacity-0');
-            screen.scrollIntoView({ behavior: 'smooth' });
-
-            iframe.src = joinUrl;
-            iframe.onload = () => {
-                setTimeout(() => {
-                    overlay.classList.add('opacity-0');
-                    setTimeout(() => overlay.classList.add('hidden'), 300);
-                }, 1000);
-            };
-
-            // Start encounter timer
-            startTimer();
-        }
-
-        // 5. Timer Engine
-        function startTimer() {
-            callStartTime = Date.now();
-            const timerDisplay = document.getElementById('active-timer-display');
-            if (callTimerInterval) clearInterval(callTimerInterval);
-
-            callTimerInterval = setInterval(() => {
-                const elapsedSec = Math.floor((Date.now() - callStartTime) / 1000);
-                const hrs = String(Math.floor(elapsedSec / 3600)).padStart(2, '0');
-                const mins = String(Math.floor((elapsedSec % 3600) / 60)).padStart(2, '0');
-                const secs = String(elapsedSec % 60).padStart(2, '0');
-                timerDisplay.textContent = `${hrs}:${mins}:${secs}`;
-            }, 1000);
-        }
-
-        function stopTimer() {
-            if (callTimerInterval) {
-                clearInterval(callTimerInterval);
-                callTimerInterval = null;
-            }
-            if (!callStartTime) return '00:00';
-            const totalSec = Math.floor((Date.now() - callStartTime) / 1000);
-            const mins = String(Math.floor(totalSec / 60)).padStart(2, '0');
-            const secs = String(totalSec % 60).padStart(2, '0');
-            return `${mins}:${secs}`;
-        }
-
-        // 6. End Encounter Action
-        document.getElementById('end-encounter-btn').addEventListener('click', () => {
-            if (confirm('Are you sure you want to conclude this clinical interpretation encounter?')) {
-                concludeEncounter();
-            }
-        });
-
-        function concludeEncounter() {
-            const finalDuration = stopTimer();
-
-            // Log encounter locally
-            addEncounterToLog({
-                id: activeEncounterId,
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                ref: activeReference,
-                modality: activeModality.toUpperCase(),
-                duration: finalDuration
-            });
-
-            forceCloseEncounterWindow();
-            alert(`Clinical encounter concluded.\nTotal Duration: ${finalDuration}\nSession logged.`);
-        }
-
-        </script>
+    <script src="/assets/js/dialer.js"></script>
+    <script src="/assets/js/dialer-handlers.js"></script>
     <!-- Standby Active Cordial Modal -->
     <div id="standby-active-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs transition-opacity duration-200">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative animate-in fade-in zoom-in-95 duration-200">
             <!-- Close Button -->
-            <button type="button" onclick="closeStandbyActiveModal()" class="alive absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition cursor-pointer" aria-label="Close modal">
+            <button type="button" data-c="h26" class="alive absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition cursor-pointer" aria-label="Close modal">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
@@ -1227,11 +657,11 @@
 
             <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row items-center gap-3">
-                <button type="button" onclick="openSecurePaymentLayer()" class="alive w-full sm:flex-1 py-3.5 px-5 rounded-xl bg-[#115C7B] hover:bg-[#0C4659] text-white font-bold text-xs uppercase tracking-wider text-center shadow-md shadow-[#115C7B]/20 transition cursor-pointer flex items-center justify-center gap-2">
+                <button type="button" data-c="h27" class="alive w-full sm:flex-1 py-3.5 px-5 rounded-xl bg-[#115C7B] hover:bg-[#0C4659] text-white font-bold text-xs uppercase tracking-wider text-center shadow-md shadow-[#115C7B]/20 transition cursor-pointer flex items-center justify-center gap-2">
                     <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                     <span>Add Payment Method (Secure Stripe Gateway)</span>
                 </button>
-                <button type="button" onclick="closeStandbyActiveModal()" class="alive w-full sm:w-auto py-3.5 px-5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition cursor-pointer">
+                <button type="button" data-c="h26" class="alive w-full sm:w-auto py-3.5 px-5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition cursor-pointer">
                     Return to Dispatch
                 </button>
             </div>

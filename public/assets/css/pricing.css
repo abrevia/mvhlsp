@@ -1,0 +1,45 @@
+        /* Critical above-the-fold paint (avoids a flash while the Tailwind CDN compiles) */
+        html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5rem; }
+        body { background: #FFFFFF; color: #2A2A26; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .wave-bar { transform-origin: center; animation: wave 1.1s ease-in-out infinite; }
+        @keyframes wave { 0%, 100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: .001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .001ms !important;
+            }
+        }
+    
+        /* Gentle "clickable" pulse: slow breathing ring (respects reduced motion) */
+        @keyframes alivePulse {
+            0%, 100% {
+                opacity: 0.35;
+                box-shadow: 0 0 0 0 rgba(17, 92, 123, 0);
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 12px 2px rgba(17, 92, 123, 0.16);
+            }
+        }
+        .alive { position: relative; }
+        .alive::after {
+            content: "";
+            position: absolute;
+            inset: -4px;
+            border-radius: inherit;
+            border: 2px solid rgba(17, 92, 123, 0.35);
+            opacity: 0.35;
+            pointer-events: none;
+            animation: alivePulse 4.5s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .alive::after { animation: none !important; opacity: 0 !important; }
+        }
+    
+
+/* Cascade for the staggered waveform bars (was inline animation-delay). */
+.wave-bar:nth-child(1) { animation-delay: -0.4s; }
+.wave-bar:nth-child(2) { animation-delay: -0.2s; }
+.wave-bar:nth-child(4) { animation-delay: -0.3s; }

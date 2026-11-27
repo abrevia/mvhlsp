@@ -25,16 +25,20 @@ const SECURITY_HEADERS = {
   'Cross-Origin-Opener-Policy': 'same-origin',
 };
 
-// Tailwind Play CDN compiles in the browser (needs unsafe-eval); fonts come from Google Fonts.
+// Strict CSP: the site ships precompiled Tailwind CSS (/assets/tailwind.css),
+// external per-page JS/CSS, data-* driven event listeners (no inline on*
+// handlers) and self-hosted fonts, so no 'unsafe-inline' or 'unsafe-eval' is
+// needed. The only third party is Cloudflare's Web Analytics beacon, which
+// Cloudflare injects into HTML automatically.
 const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'self'",
   "form-action 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://static.cloudflareinsights.com",
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' https://fonts.gstatic.com data:",
+  "script-src 'self' https://static.cloudflareinsights.com",
+  "style-src 'self'",
+  "font-src 'self'",
   "img-src 'self' data:",
   "connect-src 'self' https://cloudflareinsights.com",
 ].join('; ');
@@ -301,6 +305,12 @@ async function handleRequest(request, env) {
   // Clean a stray ?admin=true (or any admin param) from the root URL.
   if ((path === '/' || path === '') && url.searchParams.has('admin')) {
     return Response.redirect(new URL('/', request.url).toString(), 301);
+  }
+
+  // Printable HIPAA BAA (static page; filled from query parameters client-side)
+  if (path === '/baa-print' || path === '/baa-print.html') {
+    const res = await resolveAsset('/baa-print.html');
+    if (res) return res;
   }
 
   if (path === '/partner') {
