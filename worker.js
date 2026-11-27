@@ -39,14 +39,17 @@ const CONTENT_SECURITY_POLICY = [
   "connect-src 'self' https://cloudflareinsights.com",
 ].join('; ');
 
-// Language pairs are open-ended: every request is English -> target language.
-// Pairs outside our own roster are fulfilled by the Remoto interpreter network,
-// so only a well-formed ISO-639-3 pair is required.
+// Keep this list identical to the language pairs configured in Remoto.
+// If a pair is added/removed in Remoto, update this list and the site pickers.
+const DISPATCH_TARGETS = new Set(['spa', 'ara', 'zho', 'vie', 'hat', 'por', 'rus']);
+
 function resolveLanguagePair(input) {
   const raw = String(input || '').trim().toLowerCase();
-  const match = /^([a-z]{3})_([a-z]{3})$/.exec(raw);
+  const match = /^eng_([a-z]{3})$/.exec(raw) || /^([a-z]{3})_eng$/.exec(raw);
   if (!match) return null;
-  return { source: match[1], target: match[2] };
+  const target = match[1];
+  if (!DISPATCH_TARGETS.has(target)) return null;
+  return { source: 'eng', target: target };
 }
 
 function constantTimeEqual(a, b) {
@@ -214,7 +217,7 @@ async function handleRequest(request, env) {
       const requestedPair = (body.language_pair || 'eng_spa').toString().trim();
       const languagePair = resolveLanguagePair(requestedPair);
       if (!languagePair) {
-        return json({ error: 'Unsupported language pair format.', support: 'info@mvhlsp.site' }, 400, request);
+        return json({ error: 'That language pair is not available yet. Email info@mvhlsp.site for a quote.', support: 'info@mvhlsp.site' }, 400, request);
       }
 
       // Free test minutes are only available to an authenticated executive key.
