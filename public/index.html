@@ -130,9 +130,9 @@
                 </p>
 
                 <div class="mx-auto mt-8 flex w-full max-w-sm flex-col items-stretch justify-center gap-4 sm:mt-10 sm:max-w-none sm:flex-row sm:items-center">
-                    <button type="button" onclick="openBaaModal('Complimentary Trial Encounter')"
+                    <button type="button" onclick="activateBackup(this)"
                             class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#1D4ED8] px-6 py-3.5 text-[15px] font-semibold text-white shadow-lift transition duration-150 hover:-translate-y-0.5 hover:bg-[#1E40AF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 active:translate-y-0 sm:w-auto">
-                        Start Free 30-Min Pilot
+                        Activate Backup
                     </button>
                     <a href="#pricing"
                        class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-line bg-white px-6 py-3.5 text-[15px] font-semibold text-ink transition duration-150 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 active:translate-y-0 sm:w-auto">
@@ -394,7 +394,7 @@
                             </li>
                             <li class="flex items-center gap-2.5">
                                 <svg class="h-4 w-4 shrink-0 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.25" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                                <span class="text-sm font-medium text-ink">Free 30-min pilot</span>
+                                <span class="text-sm font-medium text-ink">BAA signed before the first call</span>
                             </li>
                         </ul>
 
@@ -441,10 +441,6 @@
                     <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400">Contact</h2>
                     <p class="mt-4">
                         <a href="mailto:marcadeus@outlook.com" class="text-sm font-medium text-slate-200 transition-colors hover:text-white">marcadeus@outlook.com</a>
-                    </p>
-                    <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-slate-700 px-3 py-1.5">
-                        <svg class="h-3.5 w-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-6.75-4.35-6.75-10.5A6.75 6.75 0 0112 3.75 6.75 6.75 0 0118.75 10.5C18.75 16.65 12 21 12 21z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5h.008v.008H12V10.5z"/></svg>
-                        <span class="text-[11px] font-medium text-slate-400">Made in Mexico, Serving the US</span>
                     </p>
                 </div>
             </div>
@@ -573,14 +569,14 @@
         </div>
     </div>
 
-    <!-- ============================ BAA / PILOT MODAL ============================ -->
+    <!-- ============================ BAA MODAL ============================ -->
     <div id="baa-modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="baa-modal-title">
         <div class="absolute inset-0 bg-ink/60 backdrop-blur-sm" data-close="baa-modal"></div>
         <div class="relative flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-2xl">
             <div class="flex items-center justify-between gap-3 border-b border-line bg-[#F8FAFC] px-5 py-4">
                 <div>
-                    <h2 id="baa-modal-title" class="text-sm font-bold text-ink">Request BAA / Start Your Pilot</h2>
-                    <p class="mt-0.5 text-xs text-slate-500">HIPAA Business Associate Agreement &middot; free 30-minute pilot</p>
+                    <h2 id="baa-modal-title" class="text-sm font-bold text-ink">Request BAA / Clinic Onboarding</h2>
+                    <p class="mt-0.5 text-xs text-slate-500">HIPAA Business Associate Agreement &middot; clinic onboarding</p>
                 </div>
                 <button type="button" onclick="closeModal('baa-modal')" aria-label="Close" class="rounded-lg p-1 text-2xl leading-none text-slate-400 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600">&times;</button>
             </div>
@@ -605,7 +601,6 @@
                             <select id="baa-entity-type" name="request_type" required
                                     class="w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm text-ink focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600">
                                 <option value="Executed BAA Request">Pre-signed HIPAA BAA</option>
-                                <option value="Complimentary Trial Encounter">Free 30-min pilot</option>
                                 <option value="Practice Operations Onboarding">General onboarding</option>
                             </select>
                         </div>
@@ -860,7 +855,7 @@
             // Backwards-compatible alias for any legacy links to the old dispatch helper
             window.launchInterpreterSession = window.activateBackup;
 
-            /* ---------- BAA / pilot modal ---------- */
+            /* ---------- BAA modal ---------- */
             window.openBaaModal = function openBaaModal(requestType) {
                 var form = byId('baa-form-container');
                 var success = byId('baa-success-container');
@@ -904,7 +899,7 @@
                     'Phone: ' + (phone || 'not provided'),
                     'Language pair: ' + pair,
                     '',
-                    'Please send the pre-signed HIPAA BAA and pilot activation details.'
+                    'Please send the pre-signed HIPAA BAA and clinic onboarding details.'
                 ].join('\n');
                 var mailLink = byId('baa-mail-link');
                 if (mailLink) {
