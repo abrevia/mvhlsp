@@ -289,16 +289,15 @@ async function handleRequest(request, env) {
     }
   }
 
-  // The clinic-facing service now lives on the single home page (mvhlsp.site/),
-  // so the old duplicate dialer URLs redirect there. /dashboard remains the
-  // private executive admin console.
-  if (path === '/connect' || path === '/quickdial') {
+  // Everything lives at the root URL now. Legacy service URLs, old /dashboard
+  // links and ?admin=true shortcuts all canonicalise to https://mvhlsp.site/.
+  if (path === '/connect' || path === '/quickdial' || path === '/dashboard') {
     return Response.redirect(new URL('/', request.url).toString(), 301);
   }
 
-  if (path === '/dashboard') {
-    const res = await resolveAsset('/dashboard.html');
-    if (res) return res;
+  // Clean a stray ?admin=true (or any admin param) from the root URL.
+  if ((path === '/' || path === '') && url.searchParams.has('admin')) {
+    return Response.redirect(new URL('/', request.url).toString(), 301);
   }
 
   if (path === '/partner') {

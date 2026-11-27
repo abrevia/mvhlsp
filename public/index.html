@@ -1194,7 +1194,7 @@
                     var data = await res.json().catch(function () { return {}; });
                     if (res.ok && data && data.success) {
                         try { sessionStorage.setItem('mvhlsp_admin_key', key); } catch (e) {}
-                        window.location.href = '/dashboard';
+                        window.location.href = '/';
                         return;
                     }
                     if (err) {
