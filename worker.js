@@ -39,16 +39,15 @@ const CONTENT_SECURITY_POLICY = [
   "connect-src 'self' https://cloudflareinsights.com",
 ].join('; ');
 
-// Must match the published rate card on the landing page.
-const LANGUAGE_PAIRS = {
-  eng_spa: { source: 'eng', target: 'spa' },
-  eng_ara: { source: 'eng', target: 'ara' },
-  eng_vie: { source: 'eng', target: 'vie' },
-  eng_zho: { source: 'eng', target: 'zho' },
-  eng_por: { source: 'eng', target: 'por' },
-  eng_hat: { source: 'eng', target: 'hat' },
-  spa_deu: { source: 'spa', target: 'deu' },
-};
+// Language pairs are open-ended: every request is English -> target language.
+// Pairs outside our own roster are fulfilled by the Remoto interpreter network,
+// so only a well-formed ISO-639-3 pair is required.
+function resolveLanguagePair(input) {
+  const raw = String(input || '').trim().toLowerCase();
+  const match = /^([a-z]{3})_([a-z]{3})$/.exec(raw);
+  if (!match) return null;
+  return { source: match[1], target: match[2] };
+}
 
 function constantTimeEqual(a, b) {
   const encoder = new TextEncoder();
@@ -213,7 +212,10 @@ async function handleRequest(request, env) {
       const extRef = (body.external_reference || `MV-${Date.now()}`).toString().trim().slice(0, 64);
 
       const requestedPair = (body.language_pair || 'eng_spa').toString().trim();
-      const languagePair = LANGUAGE_PAIRS[requestedPair] || LANGUAGE_PAIRS.eng_spa;
+      const languagePair = resolveLanguagePair(requestedPair);
+      if (!languagePair) {
+        return json({ error: 'Unsupported language pair format.', support: 'info@mvhlsp.site' }, 400, request);
+      }
 
       // Free test minutes are only available to an authenticated executive key.
       const isTestCall = isAdmin(request, body, env) && body.test_call === true;
@@ -251,7 +253,7 @@ async function handleRequest(request, env) {
         join_url: data.join_url,
         status: data.status,
         call_type: data.call_type,
-        language_pair: requestedPair in LANGUAGE_PAIRS ? requestedPair : 'eng_spa',
+        language_pair: `${languagePair.source}_${languagePair.target}`,
       }, 200, request);
     } catch (err) {
       console.error('dispatch failed:', err && err.message ? err.message : String(err));
