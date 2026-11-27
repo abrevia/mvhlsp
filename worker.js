@@ -41,7 +41,7 @@ const CONTENT_SECURITY_POLICY = [
 
 // Keep this list identical to the language pairs configured in Remoto.
 // If a pair is added/removed in Remoto, update this list and the site pickers.
-const DISPATCH_TARGETS = new Set(['spa', 'ara', 'zho', 'vie', 'hat', 'por', 'rus']);
+const DISPATCH_TARGETS = new Set(['spa', 'ara', 'zho', 'vie', 'hat', 'por']);
 
 function resolveLanguagePair(input) {
   const raw = String(input || '').trim().toLowerCase();
