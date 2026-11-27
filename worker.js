@@ -200,7 +200,7 @@ async function handleRequest(request, env) {
     const apiKey = env.REMOTO_API_KEY;
     if (!apiKey) {
       return json({
-        error: 'Switchboard key unconfigured on edge worker. Clinical support desk: info@mvhlsp.site',
+        error: 'Switchboard key unconfigured on edge worker. Support: info@mvhlsp.site',
         support: 'info@mvhlsp.site',
       }, 503, request);
     }
@@ -217,7 +217,7 @@ async function handleRequest(request, env) {
       const requestedPair = (body.language_pair || 'eng_spa').toString().trim();
       const languagePair = resolveLanguagePair(requestedPair);
       if (!languagePair) {
-        return json({ error: 'That language pair is not available yet. Email info@mvhlsp.site for a quote.', support: 'info@mvhlsp.site' }, 400, request);
+        return json({ error: 'That language pair is not available yet. Contact support: info@mvhlsp.site', support: 'info@mvhlsp.site' }, 400, request);
       }
 
       // Free test minutes are only available to an authenticated executive key.
@@ -260,7 +260,7 @@ async function handleRequest(request, env) {
       }, 200, request);
     } catch (err) {
       console.error('dispatch failed:', err && err.message ? err.message : String(err));
-      return json({ error: 'Dispatch temporarily unavailable. Clinical support desk: info@mvhlsp.site', support: 'info@mvhlsp.site' }, 500, request);
+      return json({ error: 'Dispatch temporarily unavailable. Support: info@mvhlsp.site', support: 'info@mvhlsp.site' }, 500, request);
     }
   }
 
@@ -339,7 +339,7 @@ async function handleRequest(request, env) {
     }
   }
 
-  return new Response('MVHLSP Clinical Language Access Portal is initializing. Please reload or contact support: info@mvhlsp.site.', {
+  return new Response('MVHLSP Clinical Language Access Portal is initializing. Please reload or Support: info@mvhlsp.site.', {
     status: 200,
     headers: { 'Content-Type': 'text/plain; charset=UTF-8' },
   });
