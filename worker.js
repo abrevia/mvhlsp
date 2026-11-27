@@ -311,8 +311,15 @@ async function handleRequest(request, env) {
     if (res) return res;
   }
 
-  if (path === '/' || path === '' || path === '/index.html') {
+  // Marketing / pricing page
+  if (path === '/pricing' || path === '/index.html') {
     const res = await resolveAsset('/index.html');
+    if (res) return res;
+  }
+
+  // Root = the live service dashboard (trust strip, language picker, signed BAA)
+  if (path === '/' || path === '') {
+    const res = await resolveAsset('/dashboard.html');
     if (res) return res;
   }
 
