@@ -27,7 +27,7 @@
     }
 
     refresh();
-    setInterval(refresh, 30000);
+    setInterval(refresh, 20000);
     document.addEventListener('visibilitychange', function () {
         if (!document.hidden) refresh();
     });

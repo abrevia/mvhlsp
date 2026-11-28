@@ -242,7 +242,7 @@ async function handleRequest(request, env) {
         rosterOnline += item.roster_interpreters_online || 0;
       }
       return json({ configured: true, online, rosterOnline, updatedAt: new Date().toISOString() },
-        200, request, { 'Cache-Control': 'public, max-age=15' });
+        200, request, { 'Cache-Control': 'public, max-age=10' });
     } catch (err) {
       return json({ configured: true, online: 0, rosterOnline: 0 }, 200, request);
     }
