@@ -138,7 +138,9 @@ async function handleRequest(request, env) {
   }
 
   // ------------------------------------------------- availability (read-only)
-  if (path === '/api/availability' && request.method === 'GET') {
+  // Optional ?pair=eng_spa (or ?source=eng&target=spa). Live coverage per
+  // published pair is exposed at /api/availability/all for the language picker.
+  if ((path === '/api/availability' || path === '/api/availability/all') && request.method === 'GET') {
     const apiKey = env.REMOTO_API_KEY;
     if (!apiKey) {
       return json({
@@ -148,8 +150,19 @@ async function handleRequest(request, env) {
       }, 200, request, { 'Cache-Control': 'public, max-age=15' });
     }
 
-    try {
-      const resp = await fetch('https://www.proz.com/remoto/api/v1/availability?source=eng&target=spa', {
+    // Remoto's availability feed uses its own language codes (spa, chi, hc...).
+    const AVAILABILITY_PAIRS = {
+      eng_spa: ['eng', 'spa'],
+      eng_ara: ['eng', 'ara'],
+      eng_chi: ['eng', 'chi'],
+      eng_vie: ['eng', 'vie'],
+      eng_por: ['eng', 'por'],
+      eng_hc: ['eng', 'hc'],
+      eng_rus: ['eng', 'rus'],
+    };
+
+    const fetchAvailability = async (source, target) => {
+      const resp = await fetch(`https://www.proz.com/remoto/api/v1/availability?source=${source}&target=${target}`, {
         headers: {
           'Authorization': `Bearer ${apiKey}`,
           'User-Agent': 'MVHLSP-ClinicalSwitchboard/2.0',
@@ -157,7 +170,36 @@ async function handleRequest(request, env) {
         },
       });
       const data = await resp.json();
-      return json(data, resp.status, request, { 'Cache-Control': 'public, max-age=15' });
+      if (!resp.ok) throw new Error('availability upstream error');
+      return data;
+    };
+
+    try {
+      if (path === '/api/availability/all') {
+        const keys = Object.keys(AVAILABILITY_PAIRS);
+        const results = await Promise.all(keys.map((key) => {
+          const [source, target] = AVAILABILITY_PAIRS[key];
+          return fetchAvailability(source, target)
+            .then((data) => [key, (data.data && data.data[0]) || null])
+            .catch(() => [key, null]);
+        }));
+        const pairs = {};
+        for (const [key, value] of results) pairs[key] = value;
+        return json({ object: 'list', pairs }, 200, request, { 'Cache-Control': 'public, max-age=15' });
+      }
+
+      let key = String(url.searchParams.get('pair') || '').toLowerCase();
+      if (!key) {
+        const source = String(url.searchParams.get('source') || 'eng').toLowerCase();
+        const target = String(url.searchParams.get('target') || 'spa').toLowerCase();
+        key = `${source}_${target}`;
+      }
+      const pair = AVAILABILITY_PAIRS[key];
+      if (!pair) {
+        return json({ error: 'Unsupported language pair for availability.', support: 'info@mvhlsp.site' }, 400, request);
+      }
+      const data = await fetchAvailability(pair[0], pair[1]);
+      return json(data, 200, request, { 'Cache-Control': 'public, max-age=15' });
     } catch (err) {
       return json({ status: 'ok', data: [], warning: 'Availability feed temporarily unavailable.' }, 200, request);
     }
