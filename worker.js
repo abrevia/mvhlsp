@@ -408,7 +408,13 @@ async function handleRequest(request, env) {
     if (res) return res;
   }
 
-  // Legal pages
+  // Training page (course package)
+if (path === '/training' || path === '/training.html') {
+const res = await resolveAsset('/training.html');
+if (res) return res;
+}
+
+// Legal pages
   if (path === '/terms' || path === '/terms.html') {
     const res = await resolveAsset('/terms.html');
     if (res) return res;
