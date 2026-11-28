@@ -10,7 +10,7 @@
         if (!data) return;
         var online = (typeof data.online === 'number') ? data.online : 0;
         var roster = (typeof data.rosterOnline === 'number') ? data.rosterOnline : 0;
-        countEl.textContent = online + ' online \u00b7';
+        countEl.textContent = online + ' online \u00b7 ';
         if (online === 0) {
             badge.title = 'No interpreter is online for the languages MVHLSP serves this second. The Remoto network alerts recently active interpreters and connects as soon as one is online.';
         } else {
