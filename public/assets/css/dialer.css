@@ -62,3 +62,7 @@
    Remoto alerts recently active interpreters and connects as soon as one is online). */
         .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 9999px; margin-left: 6px; vertical-align: middle; box-sizing: border-box; background: #10B981; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.18); }
         .live-dot.standby { background: transparent; border: 2px solid #115C7B; box-shadow: none; }
+
+        /* Header live counter: hidden on phones, visible from 640px up */
+        .live-network-badge { display: none; }
+        @media (min-width: 640px) { .live-network-badge { display: flex; } }
