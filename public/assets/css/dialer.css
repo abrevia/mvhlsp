@@ -57,6 +57,8 @@
             .alive-a > div, .alive-b > div, .hint-arrow { animation: none !important; }
         }
 
-        /* Live coverage dot on the language picker */
-        .live-dot { display: inline-block; width: 7px; height: 7px; border-radius: 9999px; margin-left: 6px; background: #D2D2CE; vertical-align: middle; }
-        .live-dot.on { background: #10B981; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.18); }
+        /* Live coverage dot on the language picker.
+   green = interpreter online right now; hollow teal = network standby (still covered:
+   Remoto alerts recently active interpreters and connects as soon as one is online). */
+        .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 9999px; margin-left: 6px; vertical-align: middle; box-sizing: border-box; background: #10B981; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.18); }
+        .live-dot.standby { background: transparent; border: 2px solid #115C7B; box-shadow: none; }

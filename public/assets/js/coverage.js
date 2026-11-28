@@ -1,5 +1,7 @@
-// Live coverage dots on the language picker (network + roster online counts).
-// Served as an external file because the site CSP forbids inline scripts.
+// Live coverage dots on the language picker.
+// Every published language is always serviceable (roster first, then the Remoto network),
+// so no language is ever greyed out. Green = interpreter online right now; hollow teal =
+// network standby: Remoto alerts recently active interpreters and connects when one is online.
 (function coverageDots() {
     var buttons = document.querySelectorAll('.lang-btn');
     if (!buttons.length) return;
@@ -13,11 +15,18 @@
                 if (!lang) return;
                 var info = pairs['eng_' + (map[lang] || lang)];
                 if (!info) return;
+                var online = info.interpreters_online || 0;
+                var roster = info.roster_interpreters_online || 0;
                 var dot = document.createElement('span');
-                dot.className = 'live-dot' + (info.interpreters_online > 0 ? ' on' : '');
-                dot.title = 'Online now: ' + info.interpreters_online + ' interpreter(s) in the network' +
-                    (info.roster_interpreters_online ? ' - ' + info.roster_interpreters_online + ' on the MVHLSP roster' : '') +
-                    (info.interpreters_online ? '' : ' (standby)');
+                dot.className = 'live-dot' + (online > 0 ? '' : ' standby');
+                if (online > 0) {
+                    dot.title = online + ' interpreter(s) online right now' +
+                        (roster ? ' (' + roster + ' from the MVHLSP roster)' : '') +
+                        ' - covered by the MVHLSP roster and Remoto network.';
+                } else {
+                    dot.title = 'Covered by the Remoto network: no interpreter online this second, ' +
+                        'Remoto alerts recently active interpreters and connects as soon as one is online.';
+                }
                 btn.appendChild(dot);
             });
         })
