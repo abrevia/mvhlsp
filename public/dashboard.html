@@ -24,26 +24,16 @@
 </a>
 </div>
 
-
-            <!-- Live network interpreters counter -->
-            <div id="live-network-badge" class="live-network-badge items-center gap-2 px-3 py-1.5 bg-white border border-[#C4DEE9] rounded-lg shrink-0" title="Interpreters online right now for the languages MVHLSP serves - the Remoto network including interpreters outside our roster. Refreshed every 30 seconds.">
-                <span class="relative flex h-2.5 w-2.5">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#115C7B]/40"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#115C7B]"></span>
-                </span>
-                <span class="text-[11px] font-extrabold uppercase tracking-wide text-[#115C7B]"><span id="live-network-count">&mdash;</span> interpreters online now</span>
-            </div>
-
             <!-- Header Controls: Hotline, Live Roster Indicator & Agency Link -->
             <div class="flex items-center gap-2 sm:gap-4">
                 <!-- Live Availability Badge -->
-                <div id="header-status-badge" class="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-300 rounded-lg text-emerald-800 shrink-0">
+                <div id="header-status-badge" class="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-300 rounded-lg text-emerald-800 shrink-0" title="Interpreters online right now across the languages MVHLSP serves (whole Remoto network). Refreshed every 20 seconds.">
                     <span class="relative flex h-2.5 w-2.5">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600"></span>
                     </span>
                     <span id="header-status-text" class="text-[11px] font-extrabold uppercase tracking-wide">
-                        OPI &amp; VRI Standby
+                        <span id="header-online-count" class="tabular-nums">&mdash;</span> online &middot; OPI &amp; VRI Standby
                     </span>
                 </div>
 
