@@ -205,6 +205,49 @@ async function handleRequest(request, env) {
     }
   }
 
+  // ------------------------------------------------- network live counters
+  // Sum of interpreters online right now across every published pair (network,
+  // including interpreters who are not on our roster). Cached 15 seconds.
+  if (path === '/api/network-online' && request.method === 'GET') {
+    const apiKey = env.REMOTO_API_KEY;
+    if (!apiKey) {
+      return json({ configured: false, online: 0, rosterOnline: 0 }, 200, request, { 'Cache-Control': 'public, max-age=15' });
+    }
+    const PAIRS = [
+      ['eng', 'spa'], ['eng', 'ara'], ['eng', 'chi'], ['eng', 'vie'],
+      ['eng', 'por'], ['eng', 'hc'], ['eng', 'rus'],
+    ];
+    try {
+      const results = await Promise.all(PAIRS.map(async ([source, target]) => {
+        try {
+          const resp = await fetch(`https://www.proz.com/remoto/api/v1/availability?source=${source}&target=${target}`, {
+            headers: {
+              'Authorization': `Bearer ${apiKey}`,
+              'User-Agent': 'MVHLSP-ClinicalSwitchboard/2.0',
+              'Accept': 'application/json',
+            },
+          });
+          if (!resp.ok) return null;
+          const data = await resp.json();
+          return (data.data && data.data[0]) || null;
+        } catch (err) {
+          return null;
+        }
+      }));
+      let online = 0;
+      let rosterOnline = 0;
+      for (const item of results) {
+        if (!item) continue;
+        online += item.interpreters_online || 0;
+        rosterOnline += item.roster_interpreters_online || 0;
+      }
+      return json({ configured: true, online, rosterOnline, updatedAt: new Date().toISOString() },
+        200, request, { 'Cache-Control': 'public, max-age=15' });
+    } catch (err) {
+      return json({ configured: true, online: 0, rosterOnline: 0 }, 200, request);
+    }
+  }
+
   // ------------------------------------------------------- admin verification
   if (path === '/api/admin/verify' && request.method === 'POST') {
     const expected = (env.ADMIN_KEY || '').trim();
